@@ -1,8 +1,9 @@
 from gmusicapi import Mobileclient
 import errors
 from subprocess import check_output
-api = Mobileclient()
-from pygame import mixer # Load the required library
+import os
+from gmusicapi.exceptions import AlreadyLoggedIn
+import pyglet
 
 class IBCMusicClient():
     # Please have this be an absolute path
@@ -10,6 +11,7 @@ class IBCMusicClient():
 
     def __init__(self):
         self.api = None
+        self.player = None
 
     def start(self):
         """
@@ -35,7 +37,12 @@ class IBCMusicClient():
         if self.api is None:
             raise errors.MobileClientNotInitError("The Client has not been init therefor it cannot logon.", 1000)
 
-        res = self.api.login(email, password, self.api.FROM_MAC_ADDRESS)
+        try:
+            res = self.api.login(email, password, self.api.FROM_MAC_ADDRESS)
+        except AlreadyLoggedIn as e:
+            self.api.logout()
+            res = self.api.login(email, password, self.api.FROM_MAC_ADDRESS)
+
         del email
         del password
         return res
@@ -231,7 +238,7 @@ class IBCMusicClient():
         res = self.api.get_stream_url(song_id)
         return res
 
-    def download_song_url(self, song_id):
+    def download_song(self, song_id):
         """
         Download the song from the storeId.
 
@@ -239,6 +246,9 @@ class IBCMusicClient():
         """
         url = self.get_song_url(song_id)
         song_file_path = "{}/{}.mp3".format(IBCMusicClient.SONG_DIR, song_id)
+        if os.path.isfile(song_file_path):
+            raise errors.SongAlreadyDownloadedException("The song '{}' has already been downloaded and cached".format(song_file_path), 8002)
+        # This need to not use subprocessing
         command = ['wget', url, '-O', song_file_path]
         res = check_output(command)
         lines = res.decode().split('\n')
@@ -264,6 +274,23 @@ class IBCMusicClient():
         mixer.music.play()
         """
         song_file_path = "{}/{}.mp3".format(IBCMusicClient.SONG_DIR, song_id)
+        if os.path.isfile(song_file_path):
+            # res = os.system('mpg123 {}'.format(song_file_path))
+            # command = ['mpg123', song_file_path]
+            # res = check_output(command)
+            if self.player is None:
+                self.player = pyglet.media.Player()
+                song = pyglet.media.load(song_file_path)
+                self.player.queue(song)
+                self.player.play()
+            else:
+                self.player.pause()
+                self.player.delete()
+                self.player = pyglet.media.Player()
+                song = pyglet.media.load(song_file_path)
+                self.player.queue(song)
+                self.player.play()
+            return True
+        else:
+            raise errors.SongIsNotDownloadedError("the song '{}' has not been downloaded. download_song() must be performed before this method", 8005)
 
-        command = ['mpg123', song_file_path]
-        res = check_output(command)

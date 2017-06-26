@@ -45,6 +45,22 @@ class CouldNotOpenIBCConfigFile(Exception):
             self.errors = errors
 
 
+class CouldNotLoginError(Exception):
+    def __init__(self, message, errors):
+            super(CouldNotLoginError, self).__init__(message)
+            self.errors = errors
+
+
+class SongAlreadyDownloadedException(Exception):
+    def __init__(self, message, errors):
+            super(SongAlreadyDownloadedException, self).__init__(message)
+            self.errors = errors
+
+
+class SongIsNotDownloadedError(Exception):
+    def __init__(self, message, errors):
+            super(SongIsNotDownloadedError, self).__init__(message)
+            self.errors = errors
 
 
 
