@@ -62,6 +62,19 @@ class SongIsNotDownloadedError(Exception):
             super(SongIsNotDownloadedError, self).__init__(message)
             self.errors = errors
 
+class InvalidVolumePercentageError(Exception):
+    def __init__(self, message, errors):
+            super(InvalidVolumePercentageError, self).__init__(message)
+            self.errors = errors
+
+class FailedToSetVolumeError(Exception):
+    def __init__(self, message, errors):
+            super(FailedToSetVolumeError, self).__init__(message)
+            self.errors = errors
+
+
+
+
 
 
 

@@ -28,7 +28,9 @@ class PlaySong(Resource):
         :return: String URL to our website
         """
         ret = {'message': '', 'status': ''}
+
         res = Interface.music_client.logon(username, password)
+
 
         if res is False:
             raise errors.CouldNotLoginError('Could not login using username: {} and password: {}'.format(username, password), 8001)
@@ -58,15 +60,86 @@ class PlaySong(Resource):
             ret['message'] = "The song '{}' has not been downloaded.".format(song_id)
 
         Interface.music_client.logout()
-        Interface.music_client.stop()
 
         return ret
 
+class StopSong(Resource):
+    """
+    Returns new URL of all the scraped pages of the url given.
+    """
+    def get(self):
+        """
+        Get the url for the desired website scraped pages
+
+        :return: String URL to our website
+        """
+        ret = {'message': '', 'status': ''}
+        res = Interface.music_client.stop_song()
+        if res is True:
+            ret['message'] = "Song stopped successfully"
+            ret['status'] = "OK"
+        elif res is False:
+            ret['message'] = "No song to stop playing."
+            ret['status'] = 'WARNING'
+        return ret
+
+class ResumeSong(Resource):
+    """
+    Returns new URL of all the scraped pages of the url given.
+    """
+    def get(self):
+        """
+        Get the url for the desired website scraped pages
+
+        :return: String URL to our website
+        """
+        ret = {'message': '', 'status': ''}
+        res = Interface.music_client.resume_song()
+        if res is True:
+            ret['message'] = "Song resumed successfully"
+            ret['status'] = "OK"
+        elif res is False:
+            ret['message'] = "No song to start playing."
+            ret['status'] = 'WARNING'
+        return ret
+
+class SetVolume(Resource):
+    """
+    Returns new URL of all the scraped pages of the url given.
+    """
+    def get(self, volume_perc):
+        """
+        Get the url for the desired website scraped pages
+
+        :return: String URL to our website
+        """
+        ret = {'message': '', 'status': ''}
+
+        try:
+            Interface.music_client.set_volume(volume_perc)
+            ret['status'] = "OK"
+            ret['message'] = "Volume changed successfully"
+        except ValueError:
+            ret['status'] = 'ERROR'
+            ret['message'] = '{} is not an integer. Use a integer.'.format(volume_perc)
+        except errors.InvalidVolumePercentageError as e:
+            ret['status'] = 'ERROR'
+            ret['message'] = "'{}' is an invalid volume percentage (0-100).".format(volume_perc)
+        except errors.FailedToSetVolumeError as e:
+            ret['status'] = 'ERROR'
+            ret['message'] = "Could not set Volume. Bash error code: {}".format(e.message)
+
+        
+        return ret
 
 
+    
 # API resource routing
 api.add_resource(PlaySong, '/PlaySong/<string:username>/<string:password>/<string:song_id>')
+api.add_resource(StopSong, '/StopSong')
+api.add_resource(ResumeSong, '/ResumeSong')
+api.add_resource(SetVolume, '/SetVolume/<string:volume_perc>')
 
 if __name__ == '__main__':
     # Start Flask
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

@@ -5,7 +5,7 @@ from netifaces import AF_INET, AF_INET6, AF_LINK
 import requests
 
 class IBCInterface():
-    CONFIG_FPATH = "/Users/copelanda1/Desktop/ibcconfig"
+    CONFIG_FPATH = "/home/pi/Desktop/JukeSite/ibcconfig"
 
     def __init__(self):
         self.id = None
