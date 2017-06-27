@@ -17,6 +17,8 @@ class IBCInterface():
 
     def set_id_and_interface(self):
         """
+        INSTEAD: I think we should give hostnames staerting with ibc indicating that they are IBC.
+        
         Each IBC will have its own ID starting from 1 and going up.
         The interface name connected in to the wifi needs to be on the line below the id.
         """
@@ -50,31 +52,6 @@ class IBCInterface():
         else:
             self.name = res['data']['name']
             return True
-
-    def master_scan(self):
-        """
-        For loop over the network and make a request call to ever webserver.
-        The device that gives a response is the master server.
-
-        :return: bool if it could find a master server
-        """
-        if self.ip is None:
-            errors.SetIpAddressError('Set the IBCInterface IP address to a valid ip address.', 2001)
-
-        netmask = ni.ifaddresses(self.interface_name)[AF_INET][0]['netmask']
-
-        if netmask == '255.255.255.0':
-            first_part = self.ip.split('.')[0:3]
-            first_part = ".".join(first_part)
-            for i in range(256):
-                new_ip = "{}.{}".format(first_part, i)
-                res = requests.get('http://{}/rest/master/info/id'.format(new_ip))
-                if res.status_code == 200:
-                    # Found the master server
-                    res = res.json()
-                    return res
-
-        return None
 
     def get_current_ip(self):
         """
