@@ -19,53 +19,47 @@ api = Api(app)
 
 class PlaySong(Resource):
     """
-    Returns new URL of all the scraped pages of the url given.
+    Plays a song from the IBC
     """
-    def get(self, username, password, song_id):
+    def get(self, song_id):
         """
-        Get the url for the desired website scraped pages
+        Play a song from local storage
 
         :return: String URL to our website
         """
         ret = {'message': '', 'status': ''}
 
-        res = Interface.music_client.logon(username, password)
-
-
-        if res is False:
-            raise errors.CouldNotLoginError('Could not login using username: {} and password: {}'.format(username, password), 8001)
-
-        try:
-            Interface.music_client.download_song(song_id)
-            ret['status'] = 'OK'
-            ret['message'] = "Song '{}' successfully downloaded. ".format(song_id)
-        except errors.CouldNotLoginError as e:
-            ret['status'] = 'ERROR'
-            ret['message'] = 'Could not login to google with account {}'.format(username)
-
-        except errors.SongAlreadyDownloadedException as e:
-            ret['status'] = 'OK'
-            ret['message'] = "Song '{}' already cached. Did not download.".format(song_id)
-        except errors.CannotDownloadSongError as e:
-            ret['status'] = 'ERROR'
-            ret['message'] = "Could not download song '{}' from google.".format(song_id)
-
         try:
             Interface.music_client.play_song(song_id)
             ret['message'] += "Song '{}' is playing.".format(song_id)
-
-
         except errors.SongIsNotDownloadedError as e:
             ret['status'] = 'ERROR'
             ret['message'] = "The song '{}' has not been downloaded.".format(song_id)
 
-        Interface.music_client.logout()
+        return ret
+
+class DownloadSong(Resource):
+    """
+    Download a song from the CBM
+    """
+
+    def get(self, cbm_url, song_id):
+        ret = {'message': '', 'status': ''}
+
+        try:
+            Interface.music_client.download_song(cbm_url, song_id)
+            ret['status'] = 'OK'
+            ret['message'] = "Song '{}' successfully downloaded. ".format(song_id)
+        except errors.SongAlreadyDownloadedException as e:
+            ret['status'] = 'OK'
+            ret['message'] = "Song '{}' already cached. Did not download.".format(song_id)
 
         return ret
 
+
 class StopSong(Resource):
     """
-    Returns new URL of all the scraped pages of the url given.
+    Stops the song that is currently playing.
     """
     def get(self):
         """
@@ -85,7 +79,7 @@ class StopSong(Resource):
 
 class ResumeSong(Resource):
     """
-    Returns new URL of all the scraped pages of the url given.
+    Resumes the song that is already being played.
     """
     def get(self):
         """
@@ -105,7 +99,7 @@ class ResumeSong(Resource):
 
 class SetVolume(Resource):
     """
-    Returns new URL of all the scraped pages of the url given.
+    Sets the volume of the IBC device.
     """
     def get(self, volume_perc):
         """
@@ -135,7 +129,8 @@ class SetVolume(Resource):
 
     
 # API resource routing
-api.add_resource(PlaySong, '/PlaySong/<string:username>/<string:password>/<string:song_id>')
+api.add_resource(PlaySong, '/PlaySong/<string:song_id>')
+api.add_resource(DownloadSong, '/DownloadSong/<string:song_id>')
 api.add_resource(StopSong, '/StopSong')
 api.add_resource(ResumeSong, '/ResumeSong')
 api.add_resource(SetVolume, '/SetVolume/<string:volume_perc>')
