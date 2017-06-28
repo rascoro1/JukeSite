@@ -247,7 +247,7 @@ class CBMMusicManager():
         :param song_id: the 'storeId' of the specific song
         """
         url = self.get_song_url(song_id)
-        song_file_path = "{}/{}.mp3".format(IBCMusicClient.SONG_DIR, song_id)
+        song_file_path = "{}/{}.mp3".format(CBMMusicManager.SONG_DIR, song_id)
         if os.path.isfile(song_file_path):
             raise errors.SongAlreadyDownloadedException(
                 "The song '{}' has already been downloaded and cached".format(song_file_path), 8002)
