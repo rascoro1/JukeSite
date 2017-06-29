@@ -104,12 +104,14 @@ class Status(Resource):
         """
         ret = {'message': '', 'status': ''}
         res = MC.get_duration()
-        if res is True:
-            ret['message'] = {'song_id': MC.current_song, 'duration': res}
-            ret['status'] = "OK"
-        elif res is False:
-            ret['message'] = "No song to start playing."
+
+        ret['message'] = {'song_id': MC.current_song, 'duration': res}
+        ret['status'] = "OK"
+
+        if MC.current_song is None:
+            ret['message'] = "No song is playing."
             ret['status'] = 'WARNING'
+
         return ret
 
 class SetVolume(Resource):
