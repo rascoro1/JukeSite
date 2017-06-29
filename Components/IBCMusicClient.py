@@ -16,6 +16,10 @@ class IBCMusicClient():
 
         :param song_id: the 'storeId' of the specific song
         """
+        # create the song directory on the IBC device if it doesnt exits
+        if not os.path.isdir(IBCMusicClient.SONG_DIR):
+            os.mkdir(IBCMusicClient.SONG_DIR)
+
         url = "http://{}/songs/{}.mp3".format(cbm_url, song_id)
         song_file_path = "{}/{}.mp3".format(IBCMusicClient.SONG_DIR, song_id)
         if os.path.isfile(song_file_path):
