@@ -70,7 +70,7 @@ class Song():
 
         # Download the song to the IBC from the CBM
         res = requests.get(Song.DOWNLOAD.format(self.room.ip_address, self.room.interface.ip, self.id))
-        return json.load(res.json())
+        return res.json()
 
     def stop(self):
         """
@@ -79,7 +79,7 @@ class Song():
         :return:
         """
         res = requests.get(Song.STOP.format(self.room.ip_address))
-        return json.load(res.json())
+        return res.json()
 
     def resume(self):
         """
@@ -88,7 +88,7 @@ class Song():
         :return:
         """
         res = requests.get(Song.RESUME.format(self.room.ip_address))
-        return json.load(res.json())
+        return res.json()
 
     def set_volume(self, volume_perc):
         """
@@ -98,7 +98,7 @@ class Song():
         :return:
         """
         res = requests.get(Song.SET_VOLUME.format(self.room.ip_address, volume_perc))
-        return json.load(res.json())
+        return res.json()
 
     def status(self):
         """
@@ -109,7 +109,7 @@ class Song():
         """
 
         res = requests.get(Song.STATUS.format(self.room.ip_address))
-        return json.load(res.json())
+        return res.json()
 
     def is_set(self):
         if self.id is None:
