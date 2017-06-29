@@ -36,7 +36,6 @@ class IBCInterface():
 
     def start_music_client(self):
         self.music_client = IBCMusicClient()
-        self.music_client.start()
 
     def set_name(self):
         """
