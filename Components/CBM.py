@@ -40,7 +40,7 @@ class Song():
         self.artist = gmusic_song['track']['artist']
         self.album = gmusic_song['track']['album']
         self.title = gmusic_song['track']['title']
-        self.duration = gmusic_song['track']['durationMillis']
+        self.duration = int(gmusic_song['track']['durationMillis']) * .001
         self.image = gmusic_song['track']['albumArtRef'][0]['url']
 
     def play(self):

@@ -68,38 +68,21 @@ class IBCMusicClient():
         """
 
         song_file_path = "{}/{}.mp3".format(IBCMusicClient.SONG_DIR, song_id)
-        self.current_song = song_id
-        if self.player is None:
-            self.player = pygame.mixer
-            self.player.init()
-            self.player.music.load(song_file_path)
-            self.player.music.set_volume(1)
-            self.player.music.play()
-        else:
-            # Player has already been init meaning that a song may be playing
-            # We will have to stop the current song and then play the newly requested song
-            self.player.music.pause()
-            self.player.music.load(song_file_path)
-            self.player.music.play()
         
         if os.path.isfile(song_file_path):
-            # res = os.system('mpg123 {}'.format(song_file_path))
-            # command = ['mpg123', song_file_path]
-            # res = check_output(command)
-            """
+            self.current_song = song_id
             if self.player is None:
-                self.player = pyglet.media.Player()
-                song = pyglet.media.load(song_file_path)
-                self.player.queue(song)
-                self.player.play()
+                self.player = pygame.mixer
+                self.player.init()
+                self.player.music.load(song_file_path)
+                self.player.music.set_volume(1)
+                self.player.music.play()
             else:
-                self.player.pause()
-                self.player.delete()
-                self.player = pyglet.media.Player()
-                song = pyglet.media.load(song_file_path)
-                self.player.queue(song)
-                self.player.play()
-            """
+                # Player has already been init meaning that a song may be playing
+                # We will have to stop the current song and then play the newly requested song
+                self.player.music.pause()
+                self.player.music.load(song_file_path)
+                self.player.music.play()
             return True
         else:
             raise errors.SongIsNotDownloadedError("the song '{}' has not been downloaded. download_song() must be performed before this method", 8005)

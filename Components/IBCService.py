@@ -1,17 +1,11 @@
 from flask import Flask
 from flask_restful import reqparse, abort, Api, Resource
-from IBCInterface import IBCInterface
+from IBCMusicClient import IBCMusicClient
 import errors
 """
 Created by: Andrew Copeland
 """
-Interface = IBCInterface()
-Interface.start_music_client()
-
-# Setup the URL paramter
-parser = reqparse.RequestParser()
-parser.add_argument('url')
-
+MC = IBCMusicClient()
 
 # Start Flask and the REST API
 app = Flask(__name__)
@@ -30,7 +24,7 @@ class PlaySong(Resource):
         ret = {'message': '', 'status': ''}
 
         try:
-            Interface.music_client.play_song(song_id)
+            MC.play_song(song_id)
             ret['message'] += "Song '{}' is playing.".format(song_id)
             ret['status'] = 'OK'
         except errors.SongIsNotDownloadedError as e:
@@ -48,7 +42,7 @@ class DownloadSong(Resource):
         ret = {'message': '', 'status': ''}
 
         try:
-            Interface.music_client.download_song(cbm_url, song_id)
+            MC.download_song(cbm_url, song_id)
             ret['status'] = 'OK'
             ret['message'] = "Song '{}' successfully downloaded. ".format(song_id)
         except errors.SongAlreadyDownloadedException as e:
@@ -69,7 +63,7 @@ class StopSong(Resource):
         :return: String URL to our website
         """
         ret = {'message': '', 'status': ''}
-        res = Interface.music_client.stop_song()
+        res = MC.stop_song()
         if res is True:
             ret['message'] = "Song stopped successfully"
             ret['status'] = "OK"
@@ -89,7 +83,7 @@ class ResumeSong(Resource):
         :return: String URL to our website
         """
         ret = {'message': '', 'status': ''}
-        res = Interface.music_client.resume_song()
+        res = MC.resume_song()
         if res is True:
             ret['message'] = "Song resumed successfully"
             ret['status'] = "OK"
@@ -109,9 +103,9 @@ class Status(Resource):
         :return: String URL to our website
         """
         ret = {'message': '', 'status': ''}
-        res = Interface.music_client.get_duration()
+        res = MC.get_duration()
         if res is True:
-            ret['message'] = {'song_id': Interface.music_client.current_song, 'duration': res}
+            ret['message'] = {'song_id': MC.current_song, 'duration': res}
             ret['status'] = "OK"
         elif res is False:
             ret['message'] = "No song to start playing."
@@ -131,7 +125,7 @@ class SetVolume(Resource):
         ret = {'message': '', 'status': ''}
 
         try:
-            Interface.music_client.set_volume(volume_perc)
+            MC.set_volume(volume_perc)
             ret['status'] = "OK"
             ret['message'] = "Volume changed successfully"
         except ValueError:
