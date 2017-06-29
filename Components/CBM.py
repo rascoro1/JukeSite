@@ -66,7 +66,7 @@ class Song():
         # Check out to see if song is on the CBM
         if self.is_download() is False:
             # If it is not download the song with the music manager
-            self.room.interface.music_manager.download_song_id(self.id)
+            self.room.interface.music_manager.download_song(self.id)
 
         # Download the song to the IBC from the CBM
         res = requests.get(Song.DOWNLOAD.format(self.room.ip_address, self.room.interface.ip, self.id))
