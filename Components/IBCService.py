@@ -130,7 +130,7 @@ class SetVolume(Resource):
     
 # API resource routing
 api.add_resource(PlaySong, '/PlaySong/<string:song_id>')
-api.add_resource(DownloadSong, '/DownloadSong/<string:song_id>')
+api.add_resource(DownloadSong, '/DownloadSong/<string:cbm_url>/<string:song_id>')
 api.add_resource(StopSong, '/StopSong')
 api.add_resource(ResumeSong, '/ResumeSong')
 api.add_resource(SetVolume, '/SetVolume/<string:volume_perc>')

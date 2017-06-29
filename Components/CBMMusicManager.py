@@ -8,7 +8,7 @@ import pyglet
 
 class CBMMusicManager():
     # Please have this be an absolute path
-    SONG_DIR = "/home/pi/Desktop/JukeSite/songs"
+    SONG_DIR = "/home/pi/Desktop/songs"
 
     def __init__(self):
         self.api = None
