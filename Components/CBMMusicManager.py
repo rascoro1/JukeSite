@@ -3,7 +3,6 @@ import errors
 from subprocess import check_output
 import os
 from gmusicapi.exceptions import AlreadyLoggedIn
-import pyglet
 
 
 class CBMMusicManager():

@@ -1,9 +1,6 @@
-from gmusicapi import Mobileclient
 import errors
 from subprocess import check_output
 import os
-from gmusicapi.exceptions import AlreadyLoggedIn
-import pyglet
 
 class IBCMusicClient():
     # Please have this be an absolute path

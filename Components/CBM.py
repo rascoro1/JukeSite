@@ -2,7 +2,7 @@ from CBMMusicManager import CBMMusicManager
 import errors
 import netifaces as ni
 import queue
-from netifaces import AF_INET, AF_INET6, AF_LINK
+from netifaces import AF_INET
 import requests
 from subprocess import check_output
 import json
