@@ -52,7 +52,7 @@ class Song():
         """
         self.is_set()
         res = requests.get(Song.PLAY.format(self.room.ip_address, self.id))
-        return json.load(res.json())
+        return res.json()
 
     def download(self):
         """
