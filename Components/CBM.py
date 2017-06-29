@@ -141,9 +141,16 @@ class Room():
         self.interface = None
 
     def add_song(self, song_info):
+        """
+        Right now it downloads the song onto the CBM and then it downloads it to the IBC.
+
+        :param song_info:
+        :return:
+        """
         song = Song()
         song.room = self
         song.set_vars(song_info)
+        song.download()
         self.queue.put(song)
 
     def pop_song(self):

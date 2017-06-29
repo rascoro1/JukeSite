@@ -15,9 +15,14 @@ ibc1.add_song(res[1])
 ibc1.add_song(res[2])
 
 ibc1.pop_song()
-print(ibc1.current_song.download())
 print(ibc1.current_song.play())
 
-while True:
-    print(ibc1.current_song.status())
-    time.sleep(2)
+time.sleep(2)
+
+ibc1.pop_song()
+print(ibc1.current_song.play())
+
+time.sleep(2)
+
+ibc1.pop_song()
+print(ibc1.current_song.play())
