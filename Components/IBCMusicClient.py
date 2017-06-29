@@ -4,7 +4,7 @@ import os
 
 class IBCMusicClient():
     # Please have this be an absolute path
-    SONG_DIR = "/home/pi/Desktop/JukeSite/songs"
+    SONG_DIR = "/home/pi/Desktop/songs"
 
     def __init__(self):
         self.api = None
@@ -16,7 +16,7 @@ class IBCMusicClient():
 
         :param song_id: the 'storeId' of the specific song
         """
-        url = "{}/songs/{}.mp3".format(cbm_url, song_id)
+        url = "http://{}/songs/{}.mp3".format(cbm_url, song_id)
         song_file_path = "{}/{}.mp3".format(IBCMusicClient.SONG_DIR, song_id)
         if os.path.isfile(song_file_path):
             raise errors.SongAlreadyDownloadedException("The song '{}' has already been downloaded and cached".format(song_file_path), 8002)
