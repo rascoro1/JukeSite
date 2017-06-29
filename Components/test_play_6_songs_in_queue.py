@@ -20,4 +20,11 @@ for i in range(5):
     ibc1.pop_song()
     ibc1.current_song.play()
     ibc1.add_song(res[i+1])
-    time.sleep(ibc1.current_song.duration)
+    while True:
+        ibc_info = ibc1.current_song.status()
+        ibc_duration = ibc_info['message']['duration']
+        ibc_song_id = ibc_info['message']['song_id']
+
+        if ibc_duration > ibc1.current_song.duration - 1:
+            break
+        time.sleep(1)
