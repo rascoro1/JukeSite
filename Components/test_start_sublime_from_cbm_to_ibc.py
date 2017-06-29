@@ -3,8 +3,8 @@ from CBM import *
 i = CBMInterface()
 i.find_rooms()
 i.start_music_client()
-i.music_client.logon("", "")
-res = i.music_client.search_song("sublime")
+i.music_manager.logon("", "")
+res = i.music_manager.search_song("sublime")
 
 ibc1 = i.rooms[0]
 ibc1.add_song(res[0])
