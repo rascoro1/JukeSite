@@ -2,6 +2,8 @@ from CBM import *
 
 i = CBMInterface()
 i.find_rooms()
+i.interface_name = "wlan0"
+i.set_current_ip()
 i.start_music_client()
 i.music_manager.logon("", "")
 res = i.music_manager.search_song("sublime")
