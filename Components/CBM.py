@@ -13,7 +13,7 @@ class Song():
     This is an object that represents one song.
     We will be making restful API calls to our IBC's from
     """
-    CBM_WEBSITE="http://{}:5000"
+    CBM_WEBSITE = "http://{}:5000"
     DOWNLOAD = CBM_WEBSITE + "/DownloadSong/{}/{}" # from [cbm] download [song_id]
     PLAY = CBM_WEBSITE + "/PlaySong/{}" # Play [song_id]
     STOP = CBM_WEBSITE + "/StopSong" # Stop song currently playing

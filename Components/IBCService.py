@@ -32,6 +32,7 @@ class PlaySong(Resource):
         try:
             Interface.music_client.play_song(song_id)
             ret['message'] += "Song '{}' is playing.".format(song_id)
+            ret['status'] = 'OK'
         except errors.SongIsNotDownloadedError as e:
             ret['status'] = 'ERROR'
             ret['message'] = "The song '{}' has not been downloaded.".format(song_id)
@@ -97,6 +98,26 @@ class ResumeSong(Resource):
             ret['status'] = 'WARNING'
         return ret
 
+class Status(Resource):
+    """
+    Resumes the song that is already being played.
+    """
+    def get(self):
+        """
+        Get Status of ibc song and track id
+
+        :return: String URL to our website
+        """
+        ret = {'message': '', 'status': ''}
+        res = Interface.music_client.get_duration()
+        if res is True:
+            ret['message'] = {'song_id': Interface.music_client.current_song, 'duration': res}
+            ret['status'] = "OK"
+        elif res is False:
+            ret['message'] = "No song to start playing."
+            ret['status'] = 'WARNING'
+        return ret
+
 class SetVolume(Resource):
     """
     Sets the volume of the IBC device.
@@ -134,6 +155,8 @@ api.add_resource(DownloadSong, '/DownloadSong/<string:cbm_url>/<string:song_id>'
 api.add_resource(StopSong, '/StopSong')
 api.add_resource(ResumeSong, '/ResumeSong')
 api.add_resource(SetVolume, '/SetVolume/<string:volume_perc>')
+api.add_resource(Status, '/Status')
+
 
 if __name__ == '__main__':
     # Start Flask

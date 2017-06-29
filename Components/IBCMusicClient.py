@@ -1,6 +1,8 @@
 import errors
 from subprocess import check_output
 import os
+import pygame
+
 
 class IBCMusicClient():
     # Please have this be an absolute path
@@ -9,6 +11,7 @@ class IBCMusicClient():
     def __init__(self):
         self.api = None
         self.player = None
+        self.current_song = None
 
     def download_song(self, cbm_url, song_id):
         """
@@ -63,8 +66,9 @@ class IBCMusicClient():
         mixer.music.load(song_file_path)
         mixer.music.play()
         """
-        import pygame
+
         song_file_path = "{}/{}.mp3".format(IBCMusicClient.SONG_DIR, song_id)
+        self.current_song = song_id
         if self.player is None:
             self.player = pygame.mixer
             self.player.init()
@@ -125,7 +129,11 @@ class IBCMusicClient():
 
         return True
         
-        
+    def get_duration(self):
+        if self.player is None:
+            return None
+        else:
+            return self.player.get_pos()
 
 
 
