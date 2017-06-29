@@ -109,7 +109,7 @@ class Song():
         """
 
         res = requests.get(Song.STATUS.format(self.room.ip_address))
-        return res.json()
+        return res.text
 
     def is_set(self):
         if self.id is None:
