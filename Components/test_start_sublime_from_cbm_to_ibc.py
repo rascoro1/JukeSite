@@ -1,4 +1,5 @@
 from CBM import *
+import time
 
 i = CBMInterface()
 i.find_rooms()
@@ -16,3 +17,7 @@ ibc1.add_song(res[2])
 ibc1.pop_song()
 print(ibc1.current_song.download())
 print(ibc1.current_song.play())
+
+while True:
+    print(ibc1.current_song.status())
+    time.sleep(2)
