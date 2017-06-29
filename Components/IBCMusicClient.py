@@ -133,7 +133,7 @@ class IBCMusicClient():
         if self.player is None:
             return None
         else:
-            return self.player.get_pos()
+            return self.player.music.get_pos()
 
 
 
