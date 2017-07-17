@@ -175,7 +175,7 @@ class CBMInterface():
         self.rooms = []
         self.netmask = None
         self.sync_rooms()
-        self.refresher()
+        # self.refresher()
 
     def refresher(self):
         threading.Timer(5.0, self.refresher).start()
@@ -251,6 +251,7 @@ class CBMInterface():
     def start_music_client(self):
         self.music_manager = CBMMusicManager()
         self.music_manager.start()
+        self.refresher()
 
     def get_current_ip(self):
         """
