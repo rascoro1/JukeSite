@@ -203,6 +203,9 @@ class CBMInterface():
                 new_song.room = r
                 new_song.id = song.storeId
                 new_song.duration = song.durationMillis
+                
+                print("SONG DIR: {}".format(dir(song)))
+                print("SONG DUR: {}".format(song.durationMillis))
 
                 if new_song in r.queue:
                     print("Room already contains this song")
