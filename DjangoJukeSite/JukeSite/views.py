@@ -2,11 +2,14 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import loader
 from JukeSite.models import Track, Room, Queue
-from DjangoJukeSite.CBMMusicManager import CBMMusicManager
+from DjangoJukeSite.CBM import CBMInterface
 
-client = CBMMusicManager()
-client.start()
-client.logon('andcope1995@gmail.com', 'Basketball12@1995')
+Interface = CBMInterface
+Interface.interface_name = 'etho0'
+Interface.set_current_ip()
+Interface.start_music_client()
+Interface.music_manager.start()
+Interface.music_manager.logon('andcope1995@gmail.com', 'Basketball12@1995')
 
 def index(request):
     """
@@ -146,7 +149,7 @@ def get_song_query_results(song_query):
     # Find the search results
     song_results = None
     if song_query is not None:
-        song_results = client.search_song(str(song_query))
+        song_results = Interface.music_manager.search_song(str(song_query))
         # Add the results to our database
         for song in song_results:
             song = song['track']
@@ -156,10 +159,5 @@ def get_song_query_results(song_query):
     return song_results
 
 def logoff():
-    client.logout()
-    client.stop()
-
-def logon():
-    client = CBMMusicManager()
-    client.start()
-    client.logon('andcope1995@gmail.com', 'Basketball12@1995')
+    Interface.music_manager.logout()
+    Interface.music_manager.stop()
