@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+        <div class="container-fluid text-center">    
+          <div class="row content">
+            <div class="col-sm-2 sidenav">
+              <h2>Rooms</h2>
+
+              {% for room in rooms %}
+                {% if room == current_room %}
+                <a href="/room/{{ room.id }}/search"><button type="button" class="btn btn-default btn-block active">{{ room.name }}</button></a>
+                {% else %}
+                <a href="/room/{{ room.id }}/search"><button type="button" class="btn btn-default btn-block disable">{{ room.name }}</button></a>
+                {% endif %}
+              {% endfor %}
+
+            </div>
+            <div class="col-sm-7 text-left block"> 
+              <h1>Search for a Song</h1>
+              <form>
+                <input type="text" id="search_box" name="search_box"placeholder="Search..">
+                <button id="search_submit" type="submit" >Search</button>
+              </form>
+              <hr>
+
+                {% if add_results %}
+                    <p>{{ add_results }}</p>
+                {% endif %}
+
+              {% for track in song_results %}
+                  <a href="/room/{{current_room.id }}/{{ track.track.storeId }}"><button type="button" class="btn btn-default btn-block">{{ track.track.title }} - {{ song.track.artist }} - {{ track.track.album }}</button></a>
+              {% endfor %}
+
+            </div>
+            <div class="col-sm-3 sidenav">
+              <div><h2>{{current_room}} - Queue</h2></div>
+                    {% for song in queue %}
+                        <div class="well">
+                            <table>
+                                <tr>
+                                    <td><b>Title: </b></td>
+                                    <td>{{ song.title }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Artist: </b></td>
+                                    <td>{{ song.artist }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Album:  </b></td>
+                                    <td>{{ song.album }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    {% endfor %}
+
+
+            </div>
+          </div>
+        </div>
+  {% else %}
+    <h1>Welcome to JukeSite.</h1>
+    <h3>Login to collaborate playlists.</h3>
+  {% endif %}
+{% endblock %}

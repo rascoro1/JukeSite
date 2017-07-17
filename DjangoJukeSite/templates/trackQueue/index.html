@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Track Queue</title>
+</head>
+<body>
+This is a test table of the queue
+
+<table>
+    <tr>
+        <th>id</th>
+        <th>title</th>
+    </tr>
+    {% for track in tracks %}
+        <tr>
+            <td>{{ track.id }}</td>
+            <td>{{ track.title }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
