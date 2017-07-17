@@ -4,7 +4,7 @@ from django.template import loader
 from JukeSite.models import Track, Room, Queue
 from DjangoJukeSite.CBM import CBMInterface
 
-Interface = CBMInterface
+Interface = CBMInterface()
 Interface.interface_name = 'etho0'
 Interface.set_current_ip()
 Interface.start_music_client()
