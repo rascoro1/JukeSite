@@ -207,7 +207,7 @@ class CBMInterface():
                 if new_song in r.queue:
                     print("Room already contains this song")
                 else:
-                    print("Room does not contain this song yet. Download the song on the IBC.")
+                    print("Room does not contain this song yet. Add song to room. Will check if it needs to be downloaded.")
                     r.add_song(new_song)
 
     def sync_song(self):
