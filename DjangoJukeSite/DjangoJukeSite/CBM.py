@@ -275,11 +275,10 @@ class CBMInterface():
 
     def set_netmask(self):
         self.netmask = self.get_netmask()
-        
-    def music_manager_logon(self, username, pass):
-        self.music_manager.logon(username, pass)
-        self.refresher()
 
+    def music_manager_logon(self, username, password):
+        self.music_manager.logon(username, password)
+        self.refresher()
 
 def get_queue_songs(room_id):
     # Find all the current songs in the  appropriate Queue
