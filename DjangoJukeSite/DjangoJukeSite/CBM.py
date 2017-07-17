@@ -222,7 +222,9 @@ class CBMInterface():
                     # res = res.decode()
                     res = json.loads(res)
                     print("Status of the current song: {}".format(res))
+                    print("THe current song duration: {}".format(r.current_song.duration))
                     total_dur = int(r.current_song.duration)
+                    
                     cur_dur = int(res['message']['duration'])
                     
 
