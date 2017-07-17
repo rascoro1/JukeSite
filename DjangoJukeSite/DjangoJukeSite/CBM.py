@@ -204,12 +204,11 @@ class CBMInterface():
                 new_song.id = song.storeId
                 new_song.duration = song.durationMillis
 
-                with r.queue.mutex:
-                    if new_song in r.queue.queue:
-                        print("Room already contains this song")
-                    else:
-                        print("Room does not contain this song yet. Download the song on the IBC.")
-                        r.add_song(new_song)
+                if new_song in r.queue:
+                    print("Room already contains this song")
+                else:
+                    print("Room does not contain this song yet. Download the song on the IBC.")
+                    r.add_song(new_song)
 
     def sync_song(self):
         for r in self.rooms:
