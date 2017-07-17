@@ -219,7 +219,7 @@ class CBMInterface():
                     r.current_song = first_song
                 else:
                     res = r.current_song.status()
-                    res = res.decode()
+                    # res = res.decode()
                     res = json.loads(res)
                     print("Status of the current song: {}".format(res))
                     total_dur = r.current_song.duration
