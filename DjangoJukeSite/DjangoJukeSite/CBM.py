@@ -178,11 +178,10 @@ class CBMInterface():
         self.refresher()
 
     def refresher(self):
-        def printit():
-            threading.Timer(5.0, printit).start()
-            # Check if queues are synced
-            self.sync_queues()
-            self.sync_song()
+        threading.Timer(5.0, self.refresher).start()
+        # Check if queues are synced
+        self.sync_queues()
+        self.sync_song()
 
     def sync_rooms(self):
         db_rooms = DBRoom.objects.all()
