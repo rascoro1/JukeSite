@@ -136,7 +136,7 @@ class Room():
         self.mac_addr = None
         self.ip_address = None
         self.hostname = None
-        self.queue = queue.Queue()
+        self.queue = []
         self.current_song = None
         self.interface = None
 
@@ -150,10 +150,9 @@ class Room():
 
         # song.set_vars(song_info)
 
-        song.download()
-
-        self.queue.put(song)
-        return song
+        if song not in self.queue:
+            song.download()
+            self.queue.append(song)
 
     def pop_song(self):
         """
@@ -175,18 +174,20 @@ class CBMInterface():
         self.music_manager = None
         self.rooms = []
         self.netmask = None
+        self.sync_rooms()
         self.refresher()
 
     def refresher(self):
         def printit():
             threading.Timer(5.0, printit).start()
             # Check if queues are synced
-            self.sync_queue()
-
+            self.sync_queues()
+            self.sync_song()
 
     def sync_rooms(self):
         db_rooms = DBRoom.objects.all()
         for db_r in db_rooms:
+            print("Sycing: {}".format(db_r))
             r = Room()
             r.hostname = db_r.hostname
             r.ip_address = db_r.ip
@@ -194,8 +195,7 @@ class CBMInterface():
             r.id = db_r.id
             self.rooms.append(r)
 
-
-    def sync_queue(self):
+    def sync_queues(self):
         for r in self.rooms:
             songs = get_queue_songs(r.id)
 
@@ -209,10 +209,17 @@ class CBMInterface():
                     if new_song in r.queue.queue:
                         print("Room already contains this song")
                     else:
+                        print("Room does not contain this song yet. Download the song on the IBC.")
                         r.add_song(new_song)
 
-
-
+    def sync_song(self):
+        for r in self.rooms:
+            if len(r.queue) != 0:
+                if r.current_song is not None:
+                    first_song = r.queue[0]
+                    first_song.play()
+                else:
+                    print("Status of the current song: {}".format(r.current_song.status()))
 
     def find_rooms(self, address="192.168.1.0", netmask="24"):
         """
@@ -241,7 +248,6 @@ class CBMInterface():
                 print("Room {} added to the database".format(r.hostname))
             else:
                 print("Room is already in the database")
-
 
 
     def start_music_client(self):

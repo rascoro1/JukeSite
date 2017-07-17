@@ -6,7 +6,7 @@ from DjangoJukeSite.CBMMusicManager import CBMMusicManager
 
 client = CBMMusicManager()
 client.start()
-client.logon('', '')
+client.logon('andcope1995@gmail.com', 'Basketball12@1995')
 
 def index(request):
     """
