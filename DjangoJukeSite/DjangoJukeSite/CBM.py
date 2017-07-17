@@ -218,7 +218,19 @@ class CBMInterface():
                     first_song.play()
                     r.current_song = first_song
                 else:
-                    print("Status of the current song: {}".format(r.current_song.status()))
+                    res = r.current_song.status()
+                    print("Status of the current song: {}".format(res))
+                    total_dur = r.current_song.duration
+                    cur_dur = int(res['message']['duration'])
+                    
+                    if cur_dir + 5000 > total_dur:
+                        # Switch to the next song becausr the song is almost over
+                        del r.queue[0]
+                        next_song = r.queue[0]
+                        next_song.play()
+                        r.current_song = next_song
+                    
+                    
 
     def find_rooms(self, address="192.168.1.0", netmask="24"):
         """
