@@ -12,6 +12,7 @@ class IBCMusicClient():
         self.api = None
         self.player = None
         self.current_song = None
+        self.current_song_pid = None
 
     def download_song(self, cbm_url, song_id):
         """
@@ -71,6 +72,7 @@ class IBCMusicClient():
         
         if os.path.isfile(song_file_path):
             self.current_song = song_id
+            """
             if self.player is None:
                 self.player = pygame.mixer
                 self.player.init()
@@ -83,6 +85,10 @@ class IBCMusicClient():
                 self.player.music.pause()
                 self.player.music.load(song_file_path)
                 self.player.music.play()
+             """
+            commands = "mpg123 -q {}.mp3".format(song_file_path).split(' ')
+            res = check_output(command)
+            
             return True
         else:
             raise errors.SongIsNotDownloadedError("the song '{}' has not been downloaded. download_song() must be performed before this method", 8005)
