@@ -251,7 +251,6 @@ class CBMInterface():
     def start_music_client(self):
         self.music_manager = CBMMusicManager()
         self.music_manager.start()
-        self.refresher()
 
     def get_current_ip(self):
         """
@@ -276,6 +275,10 @@ class CBMInterface():
 
     def set_netmask(self):
         self.netmask = self.get_netmask()
+        
+    def music_manager_logon(self, username, pass):
+        self.music_manager.logon(username, pass)
+        self.refresher()
 
 
 def get_queue_songs(room_id):
