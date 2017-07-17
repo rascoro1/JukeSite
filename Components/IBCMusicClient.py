@@ -86,7 +86,7 @@ class IBCMusicClient():
                 self.player.music.load(song_file_path)
                 self.player.music.play()
              """
-            commands = "mpg123 -q {}.mp3".format(song_file_path).split(' ')
+            command = "mpg123 -q {}.mp3".format(song_file_path).split(' ')
             res = check_output(command)
             
             return True
