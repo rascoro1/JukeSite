@@ -8,7 +8,6 @@ Interface = CBMInterface()
 Interface.interface_name = 'etho0'
 Interface.set_current_ip()
 Interface.start_music_client()
-Interface.music_manager.start()
 Interface.music_manager.logon('andcope1995@gmail.com', 'Basketball12@1995')
 
 def index(request):
