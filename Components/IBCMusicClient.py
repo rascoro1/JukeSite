@@ -88,7 +88,7 @@ class IBCMusicClient():
              """
             # command = "mpg123 -q {} & echo".format(song_file_path).split(' ')
             os.system("mpg123 -q {} & echo".format(song_file_path))
-            res = check_output(command)
+            # res = check_output(command)
             
             return True
         else:
