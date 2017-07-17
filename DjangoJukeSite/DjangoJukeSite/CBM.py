@@ -213,7 +213,7 @@ class CBMInterface():
     def sync_song(self):
         for r in self.rooms:
             if len(r.queue) != 0:
-                if r.current_song is not None:
+                if r.current_song is None:
                     first_song = r.queue[0]
                     first_song.play()
                 else:
