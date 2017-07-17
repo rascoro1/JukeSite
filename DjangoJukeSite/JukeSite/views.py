@@ -152,7 +152,7 @@ def get_song_query_results(song_query):
         # Add the results to our database
         for song in song_results:
             song = song['track']
-            t = Track(storeId=song['storeId'], title=song['title'], album=song['album'], artist=song['artist'])
+            t = Track(storeId=song['storeId'], title=song['title'], album=song['album'], artist=song['artist'], durationMillis=song['durationMillis'])
             t.save()
 
     return song_results
