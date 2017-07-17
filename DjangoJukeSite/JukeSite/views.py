@@ -5,7 +5,7 @@ from JukeSite.models import Track, Room, Queue
 from DjangoJukeSite.CBM import CBMInterface
 
 Interface = CBMInterface()
-Interface.interface_name = 'etho0'
+Interface.interface_name = 'wlan0'
 Interface.set_current_ip()
 Interface.start_music_client()
 Interface.music_manager.logon('andcope1995@gmail.com', 'Basketball12@1995')
