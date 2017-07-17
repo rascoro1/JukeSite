@@ -216,6 +216,7 @@ class CBMInterface():
                 if r.current_song is None:
                     first_song = r.queue[0]
                     first_song.play()
+                    r.current_song = first_song
                 else:
                     print("Status of the current song: {}".format(r.current_song.status()))
 
