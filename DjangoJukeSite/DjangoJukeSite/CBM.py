@@ -219,10 +219,13 @@ class CBMInterface():
                     r.current_song = first_song
                 else:
                     res = r.current_song.status()
+                    res = res.decode()
+                    res = json.loads(res)
                     print("Status of the current song: {}".format(res))
                     total_dur = r.current_song.duration
                     cur_dur = int(res['message']['duration'])
                     
+
                     if cur_dir + 5000 > total_dur:
                         # Switch to the next song becausr the song is almost over
                         del r.queue[0]
