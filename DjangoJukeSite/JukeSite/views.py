@@ -6,8 +6,6 @@ from DjangoJukeSite.CBM import CBMInterface, Song
 import threading
 
 Interface = CBMInterface()
-Interface.interface_name = 'wlan0'
-Interface.set_current_ip()
 Interface.start_music_client()
 Interface.music_manager_logon('andcope1995@gmail.com', 'Basketball12@1995')
 
