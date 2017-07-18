@@ -1,10 +1,15 @@
-from gmusicapi import Mobileclient
-from subprocess import check_output
-import os
-from gmusicapi.exceptions import AlreadyLoggedIn
-import DjangoJukeSite.errors as errors
+# from gmusicapi import Mobileclient
+# from subprocess import check_output
+# import os
+# from gmusicapi.exceptions import AlreadyLoggedIn
+# import DjangoJukeSite.errors as errors
 
 class CBMMusicManager():
+    """
+    This class represents the music manager.
+    It will be in charge of downloading songs from the API.
+    It also represents a session to the google api.
+    """
     # Please have this be an absolute path
     SONG_DIR = "/home/pi/Desktop/songs"
 
@@ -238,6 +243,12 @@ class CBMMusicManager():
         return self.api.get_track_info(song_id)
 
     def get_song_url(self, song_id):
+        """
+        Get the download url for this song
+
+        :param song_id: A song_id
+        :return:
+        """
         self.is_authenticated()
         res = self.api.get_stream_url(song_id)
         return res

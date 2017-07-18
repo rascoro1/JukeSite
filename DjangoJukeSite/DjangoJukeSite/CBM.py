@@ -1,7 +1,6 @@
 from DjangoJukeSite.CBMMusicManager import CBMMusicManager
 import DjangoJukeSite.errors as errors
 import netifaces as ni
-import queue
 from netifaces import AF_INET
 import requests
 from subprocess import check_output
@@ -112,6 +111,10 @@ class Song():
         return res.text
 
     def is_set(self):
+        """
+        The song has not been set
+        :return:
+        """
         if self.id is None:
             raise errors.SongNeedsToBeSetError("The song has not been set. Use the set_vars() method.", 8001)
 
@@ -131,6 +134,9 @@ class Song():
 
 
 class Room():
+    """
+    This represents one of hte IBCs/Slaves
+    """
     def __init__(self):
         self.id = None
         self.mac_addr = None
@@ -144,7 +150,7 @@ class Room():
         """
         Right now it downloads the song onto the CBM and then it downloads it to the IBC.
 
-        :param song:
+        :param song: Song() class
         :return:
         """
 
@@ -165,6 +171,11 @@ class Room():
 
 
 class CBMInterface():
+    """
+    This class will be the class that is loaded and is a global in the views.py
+    It will have full functionality over the master and all of the slaves.
+    This is pretty much the engine behind all of the other classes.
+    """
     def __init__(self):
         self.id = None
         self.interface_name = "wlan0"
@@ -181,11 +192,19 @@ class CBMInterface():
         # self.refresher()
 
     def refresher(self):
+        """
+        A thread running every 5 seconds to sync songs
+        :return:
+        """
         threading.Timer(5.0, self.refresher).start()
         # Check if queues are synced
         self.sync_song()
 
     def sync_rooms(self):
+        """
+        Sync the rooms from the db to the Room classes.
+        :return:
+        """
         db_rooms = DBRoom.objects.all()
         for db_r in db_rooms:
             print("Sycing: {}".format(db_r))
@@ -197,6 +216,12 @@ class CBMInterface():
             self.rooms.append(r)
 
     def sync_queues(self):
+        """
+        Sync the queries for all of the rooms.
+        This is run on application startup.
+
+        :return:
+        """
         for r in self.rooms:
             songs = get_queue_songs(r.id)
 
@@ -216,6 +241,11 @@ class CBMInterface():
                     r.add_song(new_song)
 
     def sync_song(self):
+        """
+        Sync the song on the slave to the appropriate song in the queue.
+        A api call is sent to the Slave and in the response the status of the song is returned.
+        If the duartion of the song is '-1' then the song has stopped playing and start playing the next song
+        """
         for r in self.rooms:
             if len(r.queue) != 0:
                 if r.current_song is None:
@@ -234,20 +264,30 @@ class CBMInterface():
                     
 
                     if cur_dur == -1:
-                        # Switch to the next song becausr the song is almost over
-                        print("Switching to the next song!!!!!! --->>>>>>>")
-                        instance = Queue.objects.all()
-                        try:
-                            instance[0].delete()
-                            next_song = r.queue[1]
-                        except IndexError:
-                            print("no song to delete")
+                        # Switch to the next song becausr the song is over
+                        self.next_song(r)
 
-                        print("This is the next song: {}".format(next_song.id))
-                        next_song.play()
-                        r.current_song = next_song
-                        del r.queue[0]
-                    
+    def next_song(self, room):
+        """
+        Play the next song in the queue for this specific room.
+
+        :param room: Room() object
+        :return:
+        """
+        # Switch to the next song becausr the song is almost over
+        print("Switching to the next song!!!!!! --->>>>>>>")
+        instance = Queue.objects.all()
+        try:
+            instance[0].delete()
+            next_song = room.queue[1]
+            print("This is the next song: {}".format(next_song.id))
+            next_song.play()
+            room.current_song = next_song
+            del room.queue[0]
+        except IndexError:
+            print("There is no songs in the queue.")
+        except UnboundLocalError:
+            print("There is no next song to play.")
 
     def find_rooms(self, address="192.168.1.0", netmask="24"):
         """
@@ -255,6 +295,11 @@ class CBMInterface():
         Will find the IBc devices (Rooms) by performing a nmap scan.
         It will then find any devices IP with the hostname starting with ibc
         Defaults to 192.168.1.0/24 network.
+
+        After doing this the rooms will be added to the Django Database.
+
+        :param address: The network the device is on
+        :param netmask: The netmask of this network
         """
         command = "nmap -sn {}/{}".format(address, netmask).split(' ')
         res = check_output(command)
@@ -277,8 +322,10 @@ class CBMInterface():
             else:
                 print("Room is already in the database")
 
-
     def start_music_client(self):
+        """
+        Start the music client
+        """
         self.music_manager = CBMMusicManager()
         self.music_manager.start()
 
@@ -300,18 +347,32 @@ class CBMInterface():
         self.ip = self.get_current_ip()
 
     def get_netmask(self):
+        """
+        Get netmask of device running methos.
+        """
         s = socket.inet_ntoa(fcntl.ioctl(socket.socket(socket.AF_INET, socket.SOCK_DGRAM), 35099, struct.pack('256s', str.encode("en0")))[20:24])
         return socket.inet_ntoa(fcntl.ioctl(s.fileno(), 0x891b, struct.pack('256s',iface))[20:24])
 
     def set_netmask(self):
+        """
+        Sets the netmask
+        """
         self.netmask = self.get_netmask()
 
     def music_manager_logon(self, username, password):
+        """
+        Logon to the music mangaer
+        """
         self.music_manager.logon(username, password)
         self.refresher()
 
 def get_queue_songs(room_id):
-    # Find all the current songs in the  appropriate Queue
+    """
+    Find all of the songs in the queue associated with this room.
+
+    :param room_id: [int] unique room id
+    :return: list of songs from database
+    """
     queue_songs = []
     songs = Queue.objects.filter(room_id=room_id)
     for s in songs:
