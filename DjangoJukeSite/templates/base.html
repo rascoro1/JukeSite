@@ -9,10 +9,10 @@
 
     <script type="text/javascript">
         function volumeUp() {
-            $.get( "http://{{current_room.ip}}/SetVolume/100");
+            $.get( "http://{{current_room.ip}}:5000/SetVolume/100");
         }
         function volumeDown() {
-            $.get( "http://{{current_room.ip}}/SetVolume/70");
+            $.get( "http://{{current_room.ip}}:5000/SetVolume/70");
         }
     </script>
 </head>
