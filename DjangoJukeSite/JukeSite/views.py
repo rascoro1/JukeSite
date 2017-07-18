@@ -6,6 +6,7 @@ from DjangoJukeSite.CBM import CBMInterface, Song
 import threading
 
 Interface = CBMInterface()
+Interface.interface_name = ""
 Interface.start_music_client()
 Interface.music_manager_logon('andcope1995@gmail.com', 'Basketball12@1995')
 
@@ -35,6 +36,7 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
     # return render_to_response('trackQueue/index.html', {'tracks': Track.objects.all()})
+
 
 def room(request, room_id):
     """
@@ -70,7 +72,15 @@ def room(request, room_id):
 
     return HttpResponse(template.render(context, request))
 
+
 def search_song(request, room_id):
+    """
+    Represents a user being in a room and having the ability to search
+
+    :param request: Mandatory request
+    :param room_id: The room the user is currently in
+    :return:
+    """
     current_room = None
     queue_songs = []
     rooms = Room.objects.all()
@@ -105,7 +115,16 @@ def search_song(request, room_id):
     }
     return HttpResponse(template.render(context, request))
 
+
 def add_song(request, room_id, song_id):
+    """
+    Repersents the view that is presented when the user submits a song to the queue.
+
+    :param request: Mandatory request parameter
+    :param room_id: The room the current user is in
+    :param song_id: The song that is being added to the room
+    :return:
+    """
 
     current_room = None
     add_results = None
@@ -123,7 +142,7 @@ def add_song(request, room_id, song_id):
     if song_in_queue:
         add_results = "ERROR: Song already in the Queue"
     else:
-        q = Queue(storeId=song_id, room_id=room_id, position=1)
+        q = Queue(storeId=song_id, room_id=room_id, user=request.user.username, position=1)
         q.save()
         add_results = "Song added to the queue."
         queue_songs = get_queue_songs(room_id)
@@ -149,6 +168,12 @@ def add_song(request, room_id, song_id):
 
 
 def get_queue_songs(room_id):
+    """
+    Get all of the songs in the current room/queue
+    :param room_id: The room that the current user is in
+
+    :return:A list of Django tracks model objects
+    """
     # Find all the current songs in the  appropriate Queue
     queue_songs = []
     songs = Queue.objects.filter(room_id=room_id)
@@ -159,10 +184,22 @@ def get_queue_songs(room_id):
 
 
 def get_current_room(room_id):
+    """
+    Get the current room in the database
+
+    :param room_id:
+    :return:
+    """
     return Room.objects.get(id=room_id)
 
 
 def is_song_in_queue(song_id, queue_songs):
+    """
+    Is the song already in the Queue?
+    :param song_id: Is this song in the queue
+    :param queue_songs: A list of songs to compare the song_id
+    :return:
+    """
     for song in queue_songs:
         if song_id == song.storeId:
             return True
@@ -170,7 +207,12 @@ def is_song_in_queue(song_id, queue_songs):
 
 
 def get_song_query_results(song_query):
-    # Find the search results
+    """
+    Get the song query results entered by the yser
+
+    :param song_query: The search key word to search google
+    :return: A list of songs from the music manager.
+    """
     song_results = None
     if song_query is not None:
         song_results = Interface.music_manager.search_song(str(song_query))
@@ -182,6 +224,10 @@ def get_song_query_results(song_query):
 
     return song_results
 
+
 def logoff():
+    """
+    Log off the music manager
+    """
     Interface.music_manager.logout()
     Interface.music_manager.stop()
