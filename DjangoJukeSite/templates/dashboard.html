@@ -9,7 +9,9 @@
 
               {% for room in rooms %}
                 {% if room == current_room %}
+                <input type="text" id="name_box" placeholder="{{ room.name }}">
                 <a href="/room/{{ room.id }}/search"><button type="button" class="btn btn-default btn-block active">{{ room.name }}</button></a>
+
                 {% else %}
                 <a href="/room/{{ room.id }}/search"><button type="button" class="btn btn-default btn-block disable">{{ room.name }}</button></a>
                 {% endif %}
@@ -58,6 +60,11 @@
                                     <td><b>Album:  </b></td>
                                     <td>{{ song.album }}</td>
                                 </tr>
+                                {% if request.user.is_superuser %}
+                                    <tr>
+                                        <td><td>
+                                    </tr>
+                                {% endif %}
                             </table>
                         </div>
                     {% endfor %}
