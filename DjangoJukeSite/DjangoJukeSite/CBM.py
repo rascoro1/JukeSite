@@ -122,7 +122,7 @@ class Song():
         :return: bool if song is downloaded
         """
         self.is_set()
-        songs_dir = self.room.interface.music_manager.SONG_DIR
+        songs_dir = CBMMusicManager.SONG_DIR
         song_path = "{}/{}.mp3".format(songs_dir, self.id)
         if os.path.isfile(song_path):
             return True
