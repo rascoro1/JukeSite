@@ -11,8 +11,10 @@
                 {% if room == current_room %}
                     {% if request.user.is_superuser %}
                         <div class="well">
-                            <input type="text" id="name_box" placeholder="{{ room.name }}">
-                            <a href="/room/{{ room.id }}/search"><button type="submit">Set Name</button></a>
+                            <form>
+                                <input type="text" id="name_box" name="name_box" placeholder="{{ room.name }}">
+                                <button type="submit" id="name_submit">Set Name</button>
+                            </form>
                         </div>
                     {% else %}
                         <a href="/room/{{ room.id }}/search"><button type="button" class="btn btn-default btn-block active">{{ room.name }}</button></a>
@@ -26,7 +28,7 @@
             <div class="col-sm-6 text-left ">
               <h1>Search for a Song</h1>
               <form>
-                <input type="text" id="search_box" name="search_box"placeholder="Search..">
+                <input type="text" id="search_box" name="search_box" placeholder="Search..">
                 <button id="search_submit" type="submit" >Search</button>
               </form>
               <hr>
