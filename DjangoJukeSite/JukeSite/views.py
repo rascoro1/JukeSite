@@ -160,8 +160,7 @@ def get_queue_songs(room_id):
 
 
 def get_current_room(room_id):
-    room = Room.objects.get(id=room_id)
-    return room
+    return Room.objects.get(id=room_id)
 
 
 def is_song_in_queue(song_id, queue_songs):
