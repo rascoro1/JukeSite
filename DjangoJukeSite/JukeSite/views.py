@@ -94,6 +94,7 @@ def search_song(request, room_id):
     queue_songs = get_queue_songs(room_id)
     song_results = get_song_query_results(song_query)
     if new_room_name is not None:
+        print("NEW ROOM IS NOT NONE: {}".format(new_room_name))
         current_room.name = new_room_name
         current_room.save()
 
