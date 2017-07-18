@@ -49,4 +49,4 @@ class Queue(models.Model):
     storeId = models.CharField(max_length=256)
     room_id = models.CharField(max_length=256)
     position = models.IntegerField(default=0)
-    # user = models.CharField(max_length=256)
+    user = models.CharField(max_length=256)

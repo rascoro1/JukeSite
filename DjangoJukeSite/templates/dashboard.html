@@ -60,6 +60,10 @@
                                     <td><b>Album:  </b></td>
                                     <td>{{ song.album }}</td>
                                 </tr>
+                                <tr>
+                                    <td>Added By: </td>
+                                    <td>{{ song.user }}</td>>
+                                </tr>
                                 {% if request.user.is_superuser %}
                                     <tr>
                                         <td>Remove song<td>
