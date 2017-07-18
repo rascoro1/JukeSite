@@ -13,9 +13,6 @@
                     <input type="text" id="name_box" placeholder="{{ room.name }}">
                     <a href="/room/{{ room.id }}/search"><button type="button">Set Name</button></a>
                 </div>div></div>
-
-                <a href="/room/{{ room.id }}/search"><button type="button" class="btn btn-default btn-block active">{{ room.name }}</button></a>
-
                 {% else %}
                 <a href="/room/{{ room.id }}/search"><button type="button" class="btn btn-default btn-block disable">{{ room.name }}</button></a>
                 {% endif %}
