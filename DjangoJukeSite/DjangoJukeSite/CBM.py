@@ -144,7 +144,7 @@ class Room():
         """
         Right now it downloads the song onto the CBM and then it downloads it to the IBC.
 
-        :param song_info:
+        :param song:
         :return:
         """
 
@@ -235,8 +235,12 @@ class CBMInterface():
                         # Switch to the next song becausr the song is almost over
                         print("Switching to the next song!!!!!! --->>>>>>>")
                         instance = Queue.objects.all()
-                        instance[0].delete()
-                        next_song = r.queue[1]
+                        try:
+                            instance[0].delete()
+                            next_song = r.queue[1]
+                        except IndexError:
+                            print("No song to delete")
+
                         print("This is the next song: {}".format(next_song.id))
                         next_song.play()
                         r.current_song = next_song

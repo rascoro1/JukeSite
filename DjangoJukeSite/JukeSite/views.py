@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import loader
 from JukeSite.models import Track, Room, Queue
-from DjangoJukeSite.CBM import CBMInterface
+from DjangoJukeSite.CBM import CBMInterface, Song
 
 Interface = CBMInterface()
 Interface.interface_name = 'wlan0'
@@ -38,17 +38,21 @@ def index(request):
     # return render_to_response('trackQueue/index.html', {'tracks': Track.objects.all()})
 
 def room(request, room_id):
+    """
+    Represents a user being in a specific room.
+
+    :param request:
+    :param room_id: [int] The unique room ID. This will help identify the Queue.
+
+    :return:
+    """
     current_room = None
     queue_songs = []
     tracks = Track.objects.all()
     rooms = Room.objects.all()
     queues = Queue.objects.all()
 
-    # Find the current room
-    for r in rooms:
-        if str(r.id) == str(room_id):
-            current_room = r
-
+    current_room = get_current_room(room_id)
     # Find all the current songs in the  appropriate Queue
     songs = Queue.objects.filter(room_id=room_id)
     for s in songs:
@@ -62,6 +66,9 @@ def room(request, room_id):
         'current_room': current_room,
         'queue': queue_songs
     }
+
+
+
     return HttpResponse(template.render(context, request))
 
 def search_song(request, room_id):
@@ -111,6 +118,16 @@ def add_song(request, room_id, song_id):
         q.save()
         add_results = "Song added to the queue."
         queue_songs = get_queue_songs(room_id)
+
+        new_song = Song()
+        new_song.room = room_id
+        new_song.id = song_id
+        new_song.duration = 42069
+        for int_room in Interface.rooms:
+            if int(int_room.id) == int(room_id):
+                int_room.add_song(new_song)
+
+
 
     context = {
        'tracks': tracks,
