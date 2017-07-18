@@ -231,11 +231,12 @@ class CBMInterface():
                     cur_dur = int(res['message']['duration'])
                     
 
-                    if cur_dur + 5000 > total_dur:
+                    if cur_dur == -1:
                         # Switch to the next song becausr the song is almost over
                         print("Switching to the next song!!!!!! --->>>>>>>")
-                        del_song_id = r.queue[0].storeId
-                        Queue.objects.get(storeId=del_song_id).delete()
+                        del_song_id = r.queue[0].id
+                        instance = Queue.objects.get(storeId=del_song_id)
+                        instance.delete()
                         next_song = r.queue[1]
                         next_song.play()
                         r.current_song = next_song
