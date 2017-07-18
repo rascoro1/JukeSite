@@ -167,13 +167,14 @@ class Room():
 class CBMInterface():
     def __init__(self):
         self.id = None
-        self.interface_name = None
+        self.interface_name = "wlan0"
         self.name = None
         self.ip = None
         self.master_ip = None
         self.music_manager = None
         self.rooms = []
         self.netmask = None
+        self.set_current_ip()
         self.find_rooms()
         self.sync_rooms()
         self.sync_queues()
