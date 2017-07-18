@@ -154,6 +154,7 @@ def add_song(request, room_id, song_id):
     if song_in_queue:
         add_results = "ERROR: Song already in the Queue"
     else:
+        print("THIs is the queuers username: {}".format(request.user.username))
         q = Queue(storeId=song_id, room_id=room_id, user=request.user.username, position=1)
         q.save()
         add_results = "Song added to the queue."
