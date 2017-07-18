@@ -1,8 +1,8 @@
-# from gmusicapi import Mobileclient
-# from subprocess import check_output
-# import os
-# from gmusicapi.exceptions import AlreadyLoggedIn
-# import DjangoJukeSite.errors as errors
+from gmusicapi import Mobileclient
+from subprocess import check_output
+import os
+from gmusicapi.exceptions import AlreadyLoggedIn
+import DjangoJukeSite.errors as errors
 
 class CBMMusicManager():
     """
