@@ -188,7 +188,7 @@ class CBMInterface():
         self.set_current_ip()
         self.find_rooms()
         self.sync_rooms()
-        self.sync_queues()
+        # self.sync_queues()
         # self.refresher()
 
     def refresher(self):
