@@ -178,7 +178,7 @@ class CBMInterface():
     """
     def __init__(self):
         self.id = None
-        self.interface_name = "wlan0"
+        self.interface_name = "eth0"
         self.name = None
         self.ip = None
         self.master_ip = None
