@@ -79,14 +79,23 @@ def search_song(request, room_id):
     template = loader.get_template('dashboard.html')
     song_query = None
     song_results = None
+    new_room_name = None
 
     # Get the search query string
     if request.method == 'GET':
         song_query = request.GET.get('search_box', None)
 
+    if request.method == 'GET':
+        new_room_name = request.GET.get('name_box', None)
+
+
+
     current_room = get_current_room(room_id)
     queue_songs = get_queue_songs(room_id)
     song_results = get_song_query_results(song_query)
+
+    current_room.name = new_room_name
+    current_room.save()
 
     print(queue_songs)
     context = {
