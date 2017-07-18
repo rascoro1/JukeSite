@@ -120,11 +120,12 @@ def add_song(request, room_id, song_id):
         queue_songs = get_queue_songs(room_id)
 
         new_song = Song()
-        new_song.room = room_id
+
         new_song.id = song_id
         new_song.duration = 42069
         for int_room in Interface.rooms:
             if int(int_room.id) == int(room_id):
+                new_song.room = int_room
                 print("THis is the room: {}".format(int_room.id))
                 int_room.add_song(new_song)
 
