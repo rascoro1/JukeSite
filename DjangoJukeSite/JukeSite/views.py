@@ -81,6 +81,7 @@ def search_song(request, room_id):
     :param room_id: The room the user is currently in
     :return:
     """
+    print("THIS IS THE REQUEST DIR: {}".format(dir(request)))
     current_room = None
     queue_songs = []
     rooms = Room.objects.all()
