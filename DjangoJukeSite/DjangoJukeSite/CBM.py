@@ -246,7 +246,6 @@ class CBMInterface():
                         r.current_song = next_song
                         del r.queue[0]
                     
-                    
 
     def find_rooms(self, address="192.168.1.0", netmask="24"):
         """

@@ -10,10 +10,10 @@
               {% for room in rooms %}
                 {% if room == current_room %}
                     {% if request.user.is_superuser %}
-                    <div class="well">
-                        <input type="text" id="name_box" placeholder="{{ room.name }}">
-                        <a href="/room/{{ room.id }}/search"><button type="button">Set Name</button></a>
-                    </div>
+                        <div class="well">
+                            <input type="text" id="name_box" placeholder="{{ room.name }}">
+                            <a href="/room/{{ room.id }}/search"><button type="submit">Set Name</button></a>
+                        </div>
                     {% else %}
                         <a href="/room/{{ room.id }}/search"><button type="button" class="btn btn-default btn-block active">{{ room.name }}</button></a>
                     {% endif %}
