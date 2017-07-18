@@ -174,6 +174,7 @@ class CBMInterface():
         self.music_manager = None
         self.rooms = []
         self.netmask = None
+        self.find_rooms()
         self.sync_rooms()
         self.sync_queues()
         # self.refresher()
