@@ -8,11 +8,17 @@
     <link src="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <script type="text/javascript">
-        function volumeUp() {
-            $.get( "http://{{current_room.ip}}:5000/SetVolume/100");
+        function volumeMute() {
+            $.get( "http://{{current_room.ip}}:5000/SetVolume/0");
         }
-        function volumeDown() {
+        function volume70() {
             $.get( "http://{{current_room.ip}}:5000/SetVolume/70");
+        }
+        function volume80() {
+            $.get( "http://{{current_room.ip}}:5000/SetVolume/80");
+        }
+        function volume90() {
+            $.get( "http://{{current_room.ip}}:5000/SetVolume/90");
         }
     </script>
 </head>
