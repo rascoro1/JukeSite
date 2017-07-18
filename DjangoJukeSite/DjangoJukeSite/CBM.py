@@ -270,9 +270,9 @@ class CBMInterface():
                 print("Room is not in the database")
                 # This room is not in the database yet.
                 # Add the roome to the database
-                db_room = DBRoom(hostname=r.hostname, ip=r.ip_address, name=r.hostname, queue_id=r.hostname)
+                db_room = DBRoom(hostname=hostname, ip=ip, name=hostname, queue_id=hostname)
                 db_room.save()
-                print("Room {} added to the database".format(r.hostname))
+                print("Room {} added to the database".format(hostname))
             else:
                 print("Room is already in the database")
 
