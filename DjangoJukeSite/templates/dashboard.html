@@ -35,13 +35,12 @@
             </div>
             <div class="col-sm-3">
               <div><h2>{{current_room}} - Queue</h2></div>
-                <i class="fa fa-envelope"></i>
-                <button id="mute" onclick="volumeMute()" >Mute</button>
-                <button id="vol_70" onclick="volume70()" >70%</button>
-                <button id="vol_80" onclick="volume80()" >80%</button>
-                <button id="vol_90" onclick="volume90()" >90%</button>
-                {% if request.user.is_superuser %}
 
+                {% if request.user.is_superuser %}
+                    <button id="mute" onclick="volumeMute()" >Mute</button>
+                    <button id="vol_70" onclick="volume70()" >70%</button>
+                    <button id="vol_80" onclick="volume80()" >80%</button>
+                    <button id="vol_90" onclick="volume90()" >90%</button>
                 {% endif %}
                 <hr>
                     {% for song in queue %}
