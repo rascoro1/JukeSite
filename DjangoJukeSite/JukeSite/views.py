@@ -93,9 +93,9 @@ def search_song(request, room_id):
     current_room = get_current_room(room_id)
     queue_songs = get_queue_songs(room_id)
     song_results = get_song_query_results(song_query)
-
-    current_room.name = new_room_name
-    current_room.save()
+    if new_room_name is not None:
+        current_room.name = new_room_name
+        current_room.save()
 
     print(queue_songs)
     context = {
