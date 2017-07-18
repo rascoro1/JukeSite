@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from django.template import loader
 from JukeSite.models import Track, Room, Queue
 from DjangoJukeSite.CBM import CBMInterface, Song
+import threading
 
 Interface = CBMInterface()
 Interface.interface_name = 'wlan0'
@@ -127,9 +128,7 @@ def add_song(request, room_id, song_id):
             if int(int_room.id) == int(room_id):
                 new_song.room = int_room
                 print("THis is the room: {}".format(int_room.id))
-                int_room.add_song(new_song)
-
-
+                threading.Timer(.1, int_room.add_song(new_song)).start()
 
     context = {
        'tracks': tracks,
