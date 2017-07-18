@@ -175,12 +175,12 @@ class CBMInterface():
         self.rooms = []
         self.netmask = None
         self.sync_rooms()
+        self.sync_queues()
         # self.refresher()
 
     def refresher(self):
         threading.Timer(5.0, self.refresher).start()
         # Check if queues are synced
-        self.sync_queues()
         self.sync_song()
 
     def sync_rooms(self):
@@ -234,10 +234,10 @@ class CBMInterface():
                     if cur_dur == -1:
                         # Switch to the next song becausr the song is almost over
                         print("Switching to the next song!!!!!! --->>>>>>>")
-                        del_song_id = r.queue[0].id
-                        instance = Queue.objects.get(storeId=del_song_id)
-                        instance.delete()
+                        instance = Queue.objects.all()
+                        instance[0].delete()
                         next_song = r.queue[1]
+                        print("This is the next song: {}".format(next_song.id))
                         next_song.play()
                         r.current_song = next_song
                         del r.queue[0]
