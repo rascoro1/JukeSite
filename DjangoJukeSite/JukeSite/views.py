@@ -125,6 +125,7 @@ def add_song(request, room_id, song_id):
         new_song.duration = 42069
         for int_room in Interface.rooms:
             if int(int_room.id) == int(room_id):
+                print("THis is the room: {}".format(int_room.id))
                 int_room.add_song(new_song)
 
 
