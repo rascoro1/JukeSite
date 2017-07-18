@@ -101,6 +101,7 @@ def search_song(request, room_id):
     current_room = get_current_room(room_id)
     queue_songs = get_queue_songs(room_id)
     song_results = get_song_query_results(song_query)
+
     if new_room_name is not None:
         print("NEW ROOM IS NOT NONE: {}".format(new_room_name))
         current_room.name = new_room_name
@@ -134,10 +135,20 @@ def add_song(request, room_id, song_id):
     queues = Queue.objects.all()
     template = loader.get_template('dashboard.html')
 
+    # Get the search query string
+    if request.method == 'GET':
+        song_query = request.GET.get('search_box', None)
 
+    if request.method == 'GET':
+        new_room_name = request.GET.get('name_box', None)
+
+
+    # Get information
     current_room = get_current_room(room_id)
     queue_songs = get_queue_songs(room_id)
     song_in_queue = is_song_in_queue(song_id, queue_songs)
+    song_results = get_song_query_results(song_query)
+
 
     if song_in_queue:
         add_results = "ERROR: Song already in the Queue"
@@ -157,11 +168,14 @@ def add_song(request, room_id, song_id):
                 print("THis is the room: {}".format(int_room.id))
                 threading.Timer(.1, int_room.add_song(new_song)).start()
 
+
+
     context = {
        'tracks': tracks,
        'rooms': rooms,
        'current_room': current_room,
-       'add_results': add_results,
+        'song_results': song_results,
+        'add_results': add_results,
        'queue': queue_songs
     }
     return HttpResponse(template.render(context, request))
