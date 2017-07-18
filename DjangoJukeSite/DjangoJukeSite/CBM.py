@@ -239,7 +239,7 @@ class CBMInterface():
                             instance[0].delete()
                             next_song = r.queue[1]
                         except IndexError:
-                            print("No song to delete")
+                            print("no song to delete")
 
                         print("This is the next song: {}".format(next_song.id))
                         next_song.play()
