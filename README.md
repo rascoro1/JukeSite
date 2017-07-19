@@ -3,10 +3,10 @@ Create wifi enabled speaker with a raspberry pi and manage collaborative playlis
 </br>
 
 Rooms/Queue
-![Demo](https://github.com/rascoro1/SeleniumINI/blob/master/room_queue.jpg)
+![Demo](https://github.com/rascoro1/SeleniumINI/blob/master/room.jpg)
 
 Search
-![Demo](https://github.com/rascoro1/SeleniumINI/blob/master/room_queue.jpg)
+![Demo](https://github.com/rascoro1/SeleniumINI/blob/master/search.jpg)
 
 ## JukeSite Implementation
 To implement JukeSite in your network you will need at least 2 Raspberry pis and 2 auxilary cables. Thats it!
