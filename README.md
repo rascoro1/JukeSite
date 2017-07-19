@@ -5,12 +5,11 @@ Create wifi enabled speaker with a raspberry pi and manage collaborative playlis
 <table>
 <tr>
 <td>
-Rooms/Queue
-![Demo](https://github.com/rascoro1/JukeSite/blob/master/room.png)
+<img src='https://github.com/rascoro1/JukeSite/blob/master/room.png'/>
 </td>
 <td>
 Search
-![Demo](https://github.com/rascoro1/JukeSite/blob/master/search.png)
+<img src='https://github.com/rascoro1/JukeSite/blob/master/search.png'/>
 </td>
 </tr>
 </table>
