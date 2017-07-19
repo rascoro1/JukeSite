@@ -1,6 +1,12 @@
 # JukeSite
 Create wifi enabled speaker with a raspberry pi and manage collaborative playlists with users within your LAN through a mobile friendly website.
-![Demo](https://github.com/rascoro1/SeleniumINI/blob/master/demo.gif)
+</br>
+
+Rooms/Queue
+![Demo](https://github.com/rascoro1/SeleniumINI/blob/master/room_queue.jpg)
+
+Search
+![Demo](https://github.com/rascoro1/SeleniumINI/blob/master/room_queue.jpg)
 
 ## JukeSite Implementation
 To implement JukeSite in your network you will need at least 2 Raspberry pis and 2 auxilary cables. Thats it!
@@ -96,6 +102,9 @@ Now Logon to JukeSite (jukesite:8000) as admin.
 Select the room 'ibcKitchen'.
 You will see that there is a text box with 'ibcKitchen' in it. Enter a name into there and hit submit if you would like to rename the room.
 
+Connect your slave to a speaker with an auxilary cable.
 Now search for a song and select a song to add it to the 'ibcKitchen' Queue.
+The song should start playing from the speaker once it has been downloaded.
+Feel free too add as many songs to the Queue as you would like.
 
 Repeat and enjoy!
