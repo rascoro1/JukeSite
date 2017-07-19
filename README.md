@@ -2,12 +2,18 @@
 Create wifi enabled speaker with a raspberry pi and manage collaborative playlists with users within your LAN through a mobile friendly website.
 </br>
 
+<table>
+<tr>
+<td>
 Rooms/Queue
 ![Demo](https://github.com/rascoro1/JukeSite/blob/master/room.png)
-
+</td>
+<td>
 Search
 ![Demo](https://github.com/rascoro1/JukeSite/blob/master/search.png)
-
+</td>
+</tr>
+</table>
 ## JukeSite Implementation
 To implement JukeSite in your network you will need at least 2 Raspberry pis and 2 auxilary cables. Thats it!
 JukeSite uses a master slave architecture to manage all of the speakers in your house/LAN.
