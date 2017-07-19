@@ -218,7 +218,7 @@ def is_song_in_queue(song_id, queue_songs):
     :return:
     """
     for song in queue_songs:
-        if song_id == song.storeId:
+        if song_id == song['song'].storeId:
             return True
     return False
 
