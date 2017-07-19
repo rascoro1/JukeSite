@@ -195,7 +195,8 @@ def get_queue_songs(room_id):
     songs = Queue.objects.filter(room_id=room_id)
     for s in songs:
         song_info = Track.objects.get(storeId=s.storeId)
-        queue_songs.append(song_info)
+        song_dict = {'song': song_info, 'user': s.user}
+        queue_songs.append(song_dict)
     return queue_songs
 
 
@@ -224,7 +225,7 @@ def is_song_in_queue(song_id, queue_songs):
 
 def get_song_query_results(song_query):
     """
-    Get the song query results entered by the yser
+    Get the song query results entered by the user
 
     :param song_query: The search key word to search google
     :return: A list of songs from the music manager.
