@@ -49,20 +49,16 @@
                         <div class="well">
                             <table>
                                 <tr>
-                                    <td><b>Title: </b></td>
-                                    <td>{{ song.song.title }}</td>
+                                    <td><b>Title:</b> {{ song.song.title }}</td>
                                 </tr>
                                 <tr>
-                                    <td><b>Artist: </b></td>
-                                    <td>{{ song.song.artist }}</td>
+                                    <td><b>Artist:</b> {{ song.song.artist }}</td>
                                 </tr>
                                 <tr>
-                                    <td><b>Album:  </b></td>
-                                    <td>{{ song.song.album }}</td>
+                                    <td><b>Album:</b> {{ song.song.album }}</td>
                                 </tr>
                                 <tr>
-                                    <td><b>Added By: </b></td>
-                                    <td>{{ song.user }}</td>
+                                    <td><b>Added By:</b> {{ song.user }}</td>
                                 </tr>
                                 {% if request.user.is_superuser %}
                                     <tr>
