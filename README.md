@@ -13,6 +13,9 @@ Search
 </td>
 </tr>
 </table>
+
+
+
 ## JukeSite Implementation
 To implement JukeSite in your network you will need at least 2 Raspberry pis and 2 auxilary cables. Thats it!
 JukeSite uses a master slave architecture to manage all of the speakers in your house/LAN.
