@@ -127,6 +127,7 @@ def display_cache(request):
         res = Track.objects.get(storeId=song_id)
         if res is not None:
             cached_songs.append(res)
+            print("Found a track!")
         else:
             print("Information on this song '{}' could not be found in the database.".format(song))
 

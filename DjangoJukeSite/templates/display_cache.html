@@ -9,10 +9,10 @@
         </tr>
         {% for song in songs %}
         <tr>
-            <td>song.song.title</td>
-            <td>song.song.artist</td>
-            <td>song.song.album</td>
+            <td>{{ song.title }}</td>
+            <td>{{ song.artist }}</td>
+            <td>{{ song.album }}</td>
         </tr>
-    {% endfor %}
+        {% endfor %}
     </table>
 {% endblock %}
