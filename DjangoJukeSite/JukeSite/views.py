@@ -132,6 +132,8 @@ def display_cache(request):
         else:
             print("Information on this song '{}' could not be found in the database.".format(song))
 
+    cached_songs = sorted(cached_songs, key=lambda x: x.artist, reverse=True)
+
     context = {
         'songs': cached_songs,
     }
