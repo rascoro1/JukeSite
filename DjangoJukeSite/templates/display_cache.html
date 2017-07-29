@@ -12,7 +12,13 @@
             <td>{{ song.title }}</td>
             <td>{{ song.artist }}</td>
             <td>{{ song.album }}</td>
+            <td>
+                <form method="get" action="/song/{{ song.storeId }}.mp3">
+                    <button type="submit">Download!</button>
+                </form>
+            </td>>
         </tr>
+
         {% endfor %}
     </table>
 {% endblock %}
