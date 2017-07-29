@@ -4,6 +4,7 @@ from django.template import loader
 from JukeSite.models import Track, Room, Queue
 from DjangoJukeSite.CBM import CBMInterface, Song
 import threading
+import os
 
 Interface = CBMInterface()
 Interface.interface_name = ""
@@ -116,6 +117,24 @@ def search_song(request, room_id):
        'queue': queue_songs
     }
     return HttpResponse(template.render(context, request))
+
+def display_cache(request):
+    template = loader.get_template('display_cache.html')
+    songs = os.listdir(Interface.music_manager.SONG_DIR)
+    cached_songs = []
+    for song in songs:
+        song_id = song.rstrip('.mp3')
+        res = Track.objects.get(storeId=song_id)
+        if res is not None:
+            cached_songs.append(res)
+        else:
+            print("Information on this song '{}' could not be found in the database.".format(song))
+
+        context = {
+            'songs': cached_songs,
+        }
+
+        return HttpResponse(template.render(context, request))
 
 
 def add_song(request, room_id, song_id):

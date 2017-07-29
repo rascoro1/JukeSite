@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <table>
+        <tr>
+            <td>Song</td>
+            <td>Artist</td>
+            <td>Album</td>
+        </tr>
+        {% for song in songs %}
+        <tr>
+            <td>song.song.title</td>
+            <td>song.song.artist</td>
+            <td>song.song.album</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

@@ -38,5 +38,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^room/(?P<room_id>[\w\-]+)/$', jukesite_views.room),
     url(r'^room/(?P<room_id>[\w\-]+)/search/?$', jukesite_views.search_song),
-    url(r'^room/(?P<room_id>[\w\-]+)/(?P<song_id>[\w\-]+)/search/?$', jukesite_views.add_song)
+    url(r'^room/(?P<room_id>[\w\-]+)/(?P<song_id>[\w\-]+)/search/?$', jukesite_views.add_song),
+    url(r'^cached_songs/', jukesite_views.display_cache)
 ]
