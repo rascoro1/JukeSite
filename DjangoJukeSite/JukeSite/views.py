@@ -125,9 +125,9 @@ def display_cache(request):
     for song in songs:
         print("Looking for song {}".format(song))
         song_id = song.rstrip('.mp3')
-        res = Track.objects.get(storeId=song_id)
-        if res is not None:
-            cached_songs.append(res)
+        res = Track.objects.filter(storeId=song_id)
+        if len(res) != 0:
+            cached_songs.append(res[0])
             print("Found a track!")
         else:
             print("Information on this song '{}' could not be found in the database.".format(song))
