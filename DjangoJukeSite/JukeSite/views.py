@@ -123,6 +123,7 @@ def display_cache(request):
     songs = os.listdir(Interface.music_manager.SONG_DIR)
     cached_songs = []
     for song in songs:
+        print("Looking for song {}".format(song))
         song_id = song.rstrip('.mp3')
         res = Track.objects.get(storeId=song_id)
         if res is not None:
