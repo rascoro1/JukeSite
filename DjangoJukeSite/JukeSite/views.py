@@ -121,7 +121,6 @@ def search_song(request, room_id):
 def display_cache(request):
     template = loader.get_template('display_cache.html')
     songs = os.listdir(Interface.music_manager.SONG_DIR)
-    print("SONGS: {}".format(songs))
     cached_songs = []
     for song in songs:
         print("Looking for song {}".format(song))
@@ -133,11 +132,11 @@ def display_cache(request):
         else:
             print("Information on this song '{}' could not be found in the database.".format(song))
 
-        context = {
-            'songs': cached_songs,
-        }
+    context = {
+        'songs': cached_songs,
+    }
 
-        return HttpResponse(template.render(context, request))
+    return HttpResponse(template.render(context, request))
 
 
 def add_song(request, room_id, song_id):
