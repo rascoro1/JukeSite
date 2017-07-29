@@ -28,7 +28,7 @@ Connect to your raspberry pi that will be the master and enter the following com
 
 ```
 # Set hostname to 'jukesite'
-pi@192.168.1.60:~ $ sudo echo 'JukeSite' > /etc/hostname
+pi@192.168.1.60:~ $ echo 'JukeSite' | sudo tee /etc/hostname
 pi@192.168.1.60:~ $ sudo reboot
 
 # Download the dependancies and master software
@@ -74,8 +74,11 @@ Connect to your raspberry pi that will be the slave(s) and enter the following c
 ```
 
 # Make sure the hostname begins with the 3 characters 'ibc' this indicates that it is a slave to the master.
+# Fix a static noise bug created by pygame/raspi dont really know but this fixes it.
+pi@192.168.1.60:~ $ echo "disable_audio_dither=1" | sudo tee -a /boot/config.txt
+pi@192.168.1.60:~ $ echo "audio_pwm_mode=2" | sudo tee -a /boot/config.txt
 # Set hostname to 'ibc<any unique chars/numbers>' e.g. 'ibcKitchen'
-pi@192.168.1.60:~ $ sudo echo 'ibcKitchen' > /etc/hostname
+pi@192.168.1.60:~ $ echo 'ibcKitchen' | sudo tee /etc/hostname
 pi@192.168.1.60:~ $ sudo reboot
 
 pi@ibcKitchen:~ $ cd ~/Desktop
