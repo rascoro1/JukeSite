@@ -273,7 +273,8 @@ class CBMInterface():
                     cur_song_id = res['message']['song_id']
 
                     if cur_dur == -1:
-                        if cur_song_id != r.queue[0].id
+                        current_song = r.queue[0]
+                        if cur_song_id != current_song.id:
                             # Start playing the song but do not remove it from the queue
                             first_song = r.queue[0]
                             first_song.play()
