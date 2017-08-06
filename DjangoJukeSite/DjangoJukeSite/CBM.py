@@ -13,7 +13,13 @@ import iface
 import threading
 from JukeSite.models import Track, Queue
 from JukeSite.models import Room as DBRoom
-
+"""
+TODO:
+    When user adds a new song, elimate the delay.
+    Add skip button of current cong for admin
+    clean up the cache page
+    add voting on songs in queue
+"""
 
 class Song():
     """
@@ -264,12 +270,17 @@ class CBMInterface():
                     res = r.current_song.status()
                     res = json.loads(res)
                     cur_dur = int(res['message']['duration'])
+                    cur_song_id = res['message']['song_id']
 
                     if cur_dur == -1:
-                        # Start playing the song but do not remove it from the queue
-                        first_song = r.queue[0]
-                        first_song.play()
-                        r.current_song = first_song
+                        if cur_song_id != r.queue[0].id
+                            # Start playing the song but do not remove it from the queue
+                            first_song = r.queue[0]
+                            first_song.play()
+                            r.current_song = first_song
+                        else:
+                            # Song is old and needs to be removed
+                            Queue.objects.get(room_id=r.id).delete()
                 else:
                     res = r.current_song.status()
                     res = json.loads(res)
@@ -398,9 +409,7 @@ def get_queue_songs(room_id):
     """
     queue_songs = []
     songs = Queue.objects.filter(room_id=room_id)
-    print("THIS IS FUCKING LINE 407")
     for s in songs:
-        print("Song storeId: {}".format(s.storeId))
         song_info = Track.objects.get(storeId=s.storeId)
         queue_songs.append(song_info)
     return queue_songs
