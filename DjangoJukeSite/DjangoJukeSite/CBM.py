@@ -298,7 +298,7 @@ class CBMInterface():
         """
         # Switch to the next song becausr the song is almost over
         print("Switching to the next song!!!!!! --->>>>>>>")
-        db_songs = get_queue_songs(room.id)
+        db_songs = Queue.objects.get(id=room.id)
         try:
             db_songs[0].delete()
             next_song = room.queue[1]
