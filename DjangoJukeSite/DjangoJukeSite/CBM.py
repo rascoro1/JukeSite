@@ -262,10 +262,20 @@ class CBMInterface():
         for r in self.rooms:
             r.sync_queue()
             if len(r.queue) != 0:
-                if r.current_song is None or len(r.queue) == 1:
+                if r.current_song is None:
                     first_song = r.queue[0]
                     first_song.play()
                     r.current_song = first_song
+                elif len(r.queue) == 1:
+                    res = r.current_song.status()
+                    res = json.loads(res)
+                    cur_dur = int(res['message']['duration'])
+
+                    if cur_dur == -1:
+                        # Start playing the song but do not remove it from the queue
+                        first_song = r.queue[0]
+                        first_song.play()
+                        r.current_song = first_song
                 else:
                     res = r.current_song.status()
                     res = json.loads(res)
@@ -276,7 +286,7 @@ class CBMInterface():
                     cur_dur = int(res['message']['duration'])
 
                     if cur_dur == -1:
-                        # Switch to the next song becausr the song is over
+                        # Switch to the next song because the song is over
                         self.next_song(r)
 
     def next_song(self, room):
