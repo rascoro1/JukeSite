@@ -133,11 +133,6 @@ class Song():
             return False
 
 
-Room
-    sync_queue: Sync the DB queue with the Room queue containing the correct object type
-
-
-
 class Room():
     """
     This represents one of hte IBCs/Slaves
