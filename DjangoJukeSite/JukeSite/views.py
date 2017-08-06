@@ -183,17 +183,6 @@ def add_song(request, room_id, song_id):
         add_results = "Song added to the queue."
         queue_songs = get_queue_songs(room_id)
 
-        new_song = Song()
-
-        new_song.id = song_id
-        new_song.duration = 42069
-        for int_room in Interface.rooms:
-            if int(int_room.id) == int(room_id):
-                new_song.room = int_room
-                print("THis is the room: {}".format(int_room.id))
-                threading.Timer(.1, int_room.add_song(new_song)).start()
-
-
 
     context = {
        'tracks': tracks,

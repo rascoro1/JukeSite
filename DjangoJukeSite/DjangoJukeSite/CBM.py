@@ -15,10 +15,11 @@ from JukeSite.models import Track, Queue
 from JukeSite.models import Room as DBRoom
 """
 TODO:
-    When user adds a new song, elimate the delay.
-    Add skip button of current cong for admin
-    clean up the cache page
-    add voting on songs in queue
+    [X] Fix queue not getting synced correctly
+    [] When user adds a new song, elimate the delay.
+    [] Add skip button of current cong for admin
+    [] clean up the cache page
+    [] add voting on songs in queue
 """
 
 class Song():
@@ -249,9 +250,11 @@ class CBMInterface():
                 if self.music_manager is not None:
                     if not self.music_manager.is_downloaded(song_obj.id):
                         # Download song to master
-                        self.music_manager.download(song_obj.id)
+                        res = self.music_manager.download(song_obj.id)
+                        print("Downlaoded on master: {}".format(res))
                     # Download song to slave
-                    song_obj.download()
+                    res = song_obj.download()
+                    print("Download to the slave: {}".format(res))
 
     def sync_song(self):
         """
