@@ -16,7 +16,8 @@ from JukeSite.models import Room as DBRoom
 """
 TODO:
     [X] Fix queue not getting synced correctly
-    [] When user adds a new song, elimate the delay.
+    [X] When user adds a new song, elimate the delay.
+        [] Have the room object remember  which songs it downloaded
     [] Add skip button of current cong for admin
     [] clean up the cache page
     [] add voting on songs in queue
@@ -152,6 +153,7 @@ class Room():
         self.queue = []
         self.current_song = None
         self.interface = None
+        self.download_songs = []
 
     def sync_queue(self):
         """
@@ -252,9 +254,17 @@ class CBMInterface():
                         # Download song to master
                         res = self.music_manager.download_song(song_obj.id)
                         print("Downlaoded on master: {}".format(res))
-                    # Download song to slave
-                    res = song_obj.download()
-                    print("Download to the slave: {}".format(res))
+
+                    if song_obj.id not in r.downloaded_songs:
+                        # Download song to slave
+                        res = song_obj.download()
+                        res = json.loads(res)
+                        message = res['message']
+                        if "already cached" in message:
+                            print("Song downloaded already")
+                            r.downloaded_songs.append(song_obj.id)
+                        else:
+                            print("Download to the slave: {}".format(res))
 
     def sync_song(self):
         """
