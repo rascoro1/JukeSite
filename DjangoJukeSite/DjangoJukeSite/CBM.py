@@ -240,11 +240,12 @@ class CBMInterface():
             songs = get_queue_songs(r.id)
             for song in songs:
                 song_obj = create_song_object(r, song)
-                if not self.music_manager.is_downloaded(song_obj.id):
-                    # Download song to master
-                    self.music_manager.download(song_obj.id)
-                # Download song to slave
-                song_obj.download()
+                if self.music_manager is not None:
+                    if not self.music_manager.is_downloaded(song_obj.id):
+                        # Download song to master
+                        self.music_manager.download(song_obj.id)
+                    # Download song to slave
+                    song_obj.download()
 
     def sync_song(self):
         """
