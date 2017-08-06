@@ -153,7 +153,7 @@ class Room():
         self.queue = []
         self.current_song = None
         self.interface = None
-        self.download_songs = []
+        self.downloaded_songs = []
 
     def sync_queue(self):
         """
