@@ -250,7 +250,7 @@ class CBMInterface():
                 if self.music_manager is not None:
                     if not self.music_manager.is_downloaded(song_obj.id):
                         # Download song to master
-                        res = self.music_manager.download(song_obj.id)
+                        res = self.music_manager.download_song(song_obj.id)
                         print("Downlaoded on master: {}".format(res))
                     # Download song to slave
                     res = song_obj.download()
