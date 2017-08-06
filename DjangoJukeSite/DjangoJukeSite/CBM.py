@@ -212,6 +212,7 @@ class CBMInterface():
         threading.Timer(5.0, self.refresher).start()
         # Check if queues are synced
         self.sync_song()
+        self.sync_queues()
 
     def sync_rooms(self):
         """
@@ -237,21 +238,13 @@ class CBMInterface():
         """
         for r in self.rooms:
             songs = get_queue_songs(r.id)
-
             for song in songs:
-                new_song = Song()
-                new_song.room = r
-                new_song.id = song.storeId
-                new_song.duration = song.durationMillis
-                
-                print("SONG DIR: {}".format(dir(song)))
-                print("SONG DUR: {}".format(song.durationMillis))
-
-                if new_song in r.queue:
-                    print("Room already contains this song")
-                else:
-                    print("Room does not contain this song yet. Add song to room. Will check if it needs to be downloaded.")
-                    r.add_song(new_song)
+                song_obj = create_song_object(r, song)
+                if not self.music_manager.is_downloaded(song_obj.id):
+                    # Download song to master
+                    self.music_manager.download(song_obj.id)
+                # Download song to slave
+                song_obj.download()
 
     def sync_song(self):
         """
@@ -298,7 +291,7 @@ class CBMInterface():
         """
         # Switch to the next song becausr the song is almost over
         print("Switching to the next song!!!!!! --->>>>>>>")
-        db_songs = Queue.objects.get(id=room.id)
+        db_songs = Queue.objects.filter(room_id=room.id)
         try:
             db_songs[0].delete()
             next_song = room.queue[1]

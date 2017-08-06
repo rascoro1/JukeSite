@@ -274,3 +274,13 @@ class CBMMusicManager():
             # We have an error
             raise errors.CannotDownloadSongError("Could not download the given song. {}".format(str(error_lines)), 1003)
 
+    def is_downloaded(self, song_id):
+        song_fname = "{}.mp3".format(song_id)
+        songs = os.listdir(self.SONG_DIR)
+
+        for s in songs:
+            if s == song_fname:
+                return True
+
+        return False
+
