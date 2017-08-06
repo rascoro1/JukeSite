@@ -133,6 +133,11 @@ class Song():
             return False
 
 
+Room
+    sync_queue: Sync the DB queue with the Room queue containing the correct object type
+
+
+
 class Room():
     """
     This represents one of hte IBCs/Slaves
@@ -145,6 +150,19 @@ class Room():
         self.queue = []
         self.current_song = None
         self.interface = None
+
+    def sync_queue(self):
+        """
+        Sync the DB queue to the room object queue
+
+        :return:
+        """
+        self.queue = []
+        songs = get_queue_songs(self.id)
+        for song in songs:
+            new_song = create_song_object(self, song)
+            self.queue.append(new_song)
+
 
     def add_song(self, song):
         """
@@ -247,21 +265,20 @@ class CBMInterface():
         If the duartion of the song is '-1' then the song has stopped playing and start playing the next song
         """
         for r in self.rooms:
+            r.sync_queue()
             if len(r.queue) != 0:
-                if r.current_song is None:
+                if r.current_song is None or len(r.queue) == 1:
                     first_song = r.queue[0]
                     first_song.play()
                     r.current_song = first_song
                 else:
                     res = r.current_song.status()
-                    # res = res.decode()
                     res = json.loads(res)
                     print("Status of the current song: {}".format(res))
                     print("THe current song duration: {}".format(r.current_song.duration))
                     total_dur = int(r.current_song.duration)
                     
                     cur_dur = int(res['message']['duration'])
-                    
 
                     if cur_dur == -1:
                         # Switch to the next song becausr the song is over
@@ -276,9 +293,9 @@ class CBMInterface():
         """
         # Switch to the next song becausr the song is almost over
         print("Switching to the next song!!!!!! --->>>>>>>")
-        instance = Queue.objects.all()
+        db_songs = get_queue_songs(room.id)
         try:
-            instance[0].delete()
+            db_songs[0].delete()
             next_song = room.queue[1]
             print("This is the next song: {}".format(next_song.id))
             next_song.play()
@@ -365,6 +382,13 @@ class CBMInterface():
         """
         self.music_manager.logon(username, password)
         self.refresher()
+
+def create_song_object(room, song):
+    new_song = Song()
+    new_song.room = room
+    new_song.id = song.storeId
+    new_song.duration = song.durationMillis
+    return new_song
 
 def get_queue_songs(room_id):
     """
