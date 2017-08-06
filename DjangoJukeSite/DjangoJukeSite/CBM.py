@@ -405,6 +405,7 @@ def get_queue_songs(room_id):
     queue_songs = []
     songs = Queue.objects.filter(room_id=room_id)
     for s in songs:
+        print("Song storeId: {}".format(s.storeId))
         song_info = Track.objects.get(storeId=s.storeId)
         queue_songs.append(song_info)
     return queue_songs
