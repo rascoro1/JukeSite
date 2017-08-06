@@ -258,7 +258,6 @@ class CBMInterface():
                     if song_obj.id not in r.downloaded_songs:
                         # Download song to slave
                         res = song_obj.download()
-                        res = json.loads(res)
                         message = res['message']
                         if "already cached" in message:
                             print("Song downloaded already")
