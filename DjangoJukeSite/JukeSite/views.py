@@ -114,58 +114,6 @@ def display_cache(request):
     return HttpResponse(template.render(context, request))
 
 
-def add_song(request, room_id, song_id):
-    """
-    Repersents the view that is presented when the user submits a song to the queue.
-
-    :param request: Mandatory request parameter
-    :param room_id: The room the current user is in
-    :param song_id: The song that is being added to the room
-    :return:
-    """
-
-    current_room = None
-    add_results = ""
-    queue_songs = []
-    rooms = Room.objects.all()
-    template = loader.get_template('dashboard.html')
-
-    # Get the search query string
-    if request.method == 'GET':
-        song_query = request.GET.get('search_box', None)
-
-    if request.method == 'GET':
-        new_room_name = request.GET.get('name_box', None)
-
-    if request.method == 'GET':
-        skip_song = request.GET.get('skip_song', None)
-
-    if request.method == 'GET':
-        new_add_song = request.GET.get('new_song_add', None)
-
-
-    # Get information
-    current_room = get_current_room(room_id)
-    queue_songs = get_queue_songs(room_id)
-    song_in_queue = is_song_in_queue(new_add_song, queue_songs)
-    song_results = get_song_query_results(song_query)
-    cur_room_obj = Interface.find_room(room_id)
-
-    # Add new song
-    add_results = add_song_to_room(song_in_queue, request, new_add_song, room_id)
-
-    # Skip song in this room
-    add_results = skip_song_in_room(skip_song, cur_room_obj, add_results)
-
-    context = {
-       'rooms': rooms,
-       'current_room': current_room,
-        'song_results': song_results,
-        'add_results': add_results,
-       'queue': queue_songs
-    }
-    return HttpResponse(template.render(context, request))
-
 def get_queue_songs(room_id):
     """
     Get all of the songs in the current room/queue
@@ -201,10 +149,10 @@ def is_song_in_queue(song_id, queue_songs):
     :param queue_songs: A list of songs to compare the song_id
     :return:
     """
-
-    for song in queue_songs and song_id is not None:
-        if song_id == song['song'].storeId:
-            return True
+    if song_id is not None:
+        for song in queue_songs:
+            if song_id == song['song'].storeId:
+                return True
     return False
 
 
