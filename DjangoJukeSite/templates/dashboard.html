@@ -39,7 +39,7 @@
               <div><h2>{{current_room}} - Queue</h2></div>
 
                 {% if request.user.is_superuser %}
-                    <button class="btn btn-primary btn-sm" id="skip_song" href="room/{{ current_room.id }}/skip_song/search/?" >Skip Song</button>
+                    <button class="btn btn-primary btn-sm" id="skip_song" href="room/{{ current_room.id }}/skip_song/search/" >Skip Song</button>
                     <button class="btn btn-danger btn-sm" id="mute"   onclick="volumeMute()" >Mute</button>
                     <button class="btn btn-primary btn-sm" id="vol_70" onclick="volume70()" >70%</button>
                     <button class="btn btn-primary btn-sm" id="vol_80" onclick="volume80()" >80%</button>
