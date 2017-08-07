@@ -39,9 +39,6 @@
               <div><h2>{{current_room}} - Queue</h2></div>
 
                 {% if request.user.is_superuser %}
-                    <form>
-                        <button type="submit" id="skip_song_submit">Skip Song</button>
-                    </form>
                     <form action="http://jukesite:8000/room/{{ current_room.id }}/skip_song/search/">
                         <button class="btn btn-primary btn-sm submit" id="skip_song">Skip Song</button>
                     </form>

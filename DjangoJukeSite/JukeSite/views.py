@@ -212,7 +212,7 @@ def skip_song(request, room_id):
     template = loader.get_template('dashboard.html')
 
     if request.method == 'GET':
-        skip_song = request.GET.get('skip_song_submit', None)
+        skip_song = request.GET.get('skip_song', None)
 
     print("This is SKIP SONG: {}".format(skip_song))
 
