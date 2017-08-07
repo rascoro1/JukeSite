@@ -219,6 +219,8 @@ def skip_song(request, room_id):
     if cur_room_obj is not None:
         Interface.next_song(cur_room_obj)
         add_results = "Skipped song successfully."
+    else:
+        add_results = "Why is the room none?"
 
     context = {
        'rooms': rooms,
