@@ -10,7 +10,7 @@ Interface = CBMInterface()
 Interface.interface_name = ""
 Interface.start_music_client()
 Interface.music_manager_logon('andcope1995@gmail.com', 'Basketball12@1995')
-LAST_SEARCH_RESULTS =
+LAST_SEARCH_RESULTS = []
 
 def index(request):
     """
