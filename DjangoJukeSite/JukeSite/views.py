@@ -12,6 +12,10 @@ Interface.start_music_client()
 Interface.music_manager_logon('andcope1995@gmail.com', 'Basketball12@1995')
 LAST_SEARCH_RESULTS = []
 
+###################################
+###   VIEW FUNCTIONS
+###################################
+
 def index(request):
     """
     passes all track database objects to index.html
@@ -28,7 +32,6 @@ def index(request):
         'rooms': rooms
     }
     return HttpResponse(template.render(context, request))
-
 
 def search_song(request, room_id):
     """
@@ -115,7 +118,7 @@ def display_cache(request):
         else:
             print("Information on this song '{}' could not be found in the database.".format(song))
 
-    cached_songs = sorted(cached_songs, key=lambda x: x.artist, reverse=True)
+    cached_songs = sorted(cached_songs, key=lambda x: x.artist, reverse=False)
 
     context = {
         'songs': cached_songs,
@@ -123,6 +126,10 @@ def display_cache(request):
 
     return HttpResponse(template.render(context, request))
 
+
+###################################
+###   INTERNAL FUNCTIONS
+###################################
 
 def get_queue_songs(room_id):
     """
