@@ -223,7 +223,6 @@ def skip_song(request, room_id):
     context = {
        'rooms': rooms,
        'current_room': current_room,
-        'song_results': song_results,
         'add_results': add_results,
        'queue': queue_songs
     }
