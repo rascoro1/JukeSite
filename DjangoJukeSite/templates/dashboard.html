@@ -86,7 +86,7 @@
 
               {% for track in song_results %}
                   <div class="list-group">
-                    <a  href="/room/{{current_room.id }}/{{ track.track.storeId }}/search">
+                    <a  href="/room/{{ current_room.id }}/{{ track.track.storeId }}/search">
                         <button type="button" class="list-group-item">{{ track.track.title }} - {{ track.track.artist }} - {{ track.track.album }}</button>
                     </a>
                   </div>

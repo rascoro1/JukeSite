@@ -17,10 +17,11 @@ from JukeSite.models import Room as DBRoom
 TODO:
     [X] Fix queue not getting synced correctly
     [X] When user adds a new song, elimate the delay.
-        [] Have the room object remember  which songs it downloaded
+        [X] Have the room object remember  which songs it downloaded
     [] Add skip button of current cong for admin
     [] clean up the cache page
     [] add voting on songs in queue
+    [] when user searches song have previous search available with confirm message
 """
 
 class Song():
@@ -405,6 +406,12 @@ class CBMInterface():
         """
         self.music_manager.logon(username, password)
         self.refresher()
+
+    def find_room(self, room_id):
+        for r in self.rooms:
+            if r.id == room_id:
+                return r
+        return None
 
 def create_song_object(room, song):
     new_song = Song()
