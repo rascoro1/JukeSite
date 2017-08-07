@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+        <div class="container-fluid">
+        <div class="container text-center">
+          <div class="row">
+
+            <div class="alert alert-info">
+              <strong>Info!</strong> Select a room to join. :D
+            </div>
+            <div class="col-lg-4">
+              <h2>Rooms</h2>
+
+              {% for room in rooms %}
+                {% if room == current_room %}
+                    {% if request.user.is_superuser %}
+                        <div class="well">
+                            <form>
+                              <input class="form-control" type="text" id="name_box" name="name_box" placeholder="{{ room.name }}">
+                                <button type="submit" id="name_submit">Set Name</button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <a href="/room/{{ room.id }}/search"><button type="button" class="btn btn-default btn-block active">{{ room.name }}</button></a>
+                    {% endif %}
+                {% else %}
+                <a href="/room/{{ room.id }}/search"><button type="button" class="btn btn-default btn-block disable">{{ room.name }}</button></a>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <div class="col-lg-4"></div>
+
+          </div>
+        </div>
+        </div>
+  {% else %}
+    <h1>Welcome to JukeSite.</h1>
+    <h3>Login to collaborate playlists.</h3>
+  {% endif %}
+{% endblock %}

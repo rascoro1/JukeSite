@@ -18,71 +18,13 @@ def index(request):
     :return:
     """
     # # latest_question_list = Track.objects.order_by('-pub_date')[:5]
-    current_queue = None
+    template = loader.get_template('index.html')
     tracks = Track.objects.all()
     rooms = Room.objects.all()
     queues = Queue.objects.all()
 
-    first_room = rooms[0]
-
-    for q in queues:
-        if q.id == first_room.queue_id:
-            current_queue = q
-
-    template = loader.get_template('dashboard.html')
     context = {
-        'rooms': rooms,
-        'queue': current_queue,
-        'add_results': "Select a room to view/add songs to the queue."
-    }
-    return HttpResponse(template.render(context, request))
-    # return render_to_response('trackQueue/index.html', {'tracks': Track.objects.all()})
-
-
-def room(request, room_id):
-    """
-    Represents a user being in a specific room.
-
-    :param request:
-    :param room_id: [int] The unique room ID. This will help identify the Queue.
-
-    :return:
-    """
-    template = loader.get_template('dashboard.html')
-    current_room = None
-    add_results = ""
-    queue_songs = []
-    tracks = Track.objects.all()
-    rooms = Room.objects.all()
-    queues = Queue.objects.all()
-
-    # Get form submits
-    if request.method == 'GET':
-        skip_song = request.GET.get('skip_song', None)
-
-    # get info
-    current_room = get_current_room(room_id)
-    cur_room_obj = Interface.find_room(room_id)
-
-    # Find all the current songs in the  appropriate Queue
-    songs = Queue.objects.filter(room_id=room_id)
-    for s in songs:
-        song_info = Track.objects.filter(storeId=s.storeId)
-        queue_songs.append(song_info)
-
-
-
-
-    # Skip song in this room if needed
-    add_results = skip_song_in_room(skip_song, cur_room_obj, add_results)
-
-
-    context = {
-        'tracks': tracks,
-        'rooms': rooms,
-        'current_room': current_room,
-        'add_results': add_results,
-        'queue': queue_songs
+        'rooms': rooms
     }
     return HttpResponse(template.render(context, request))
 
