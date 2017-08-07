@@ -411,7 +411,7 @@ class CBMInterface():
         print("Room ID: {}".format(room_id))
         for r in self.rooms:
             print("Aval room: {}".format(r.id))
-            if r.id == room_id:
+            if str(r.id) == str(room_id):
                 return r
         return None
 
