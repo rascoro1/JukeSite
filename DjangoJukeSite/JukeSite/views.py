@@ -85,11 +85,12 @@ def search_song(request, room_id):
     add_results = skip_song_in_room(skip_song, cur_room_obj, add_results)
 
     queue_songs = get_queue_songs(room_id)
-    LAST_SEARCH_RESULTS = song_results
 
     print("This is song results: {}".format(song_results))
     if song_results is None:
         song_results = LAST_SEARCH_RESULTS
+    else:
+        LAST_SEARCH_RESULTS = song_results
 
     context = {
         'rooms': rooms,
