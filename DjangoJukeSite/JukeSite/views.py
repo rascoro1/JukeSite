@@ -154,7 +154,6 @@ def add_song(request, room_id, song_id):
     current_room = None
     add_results = None
     queue_songs = []
-    tracks = Track.objects.all()
     rooms = Room.objects.all()
     queues = Queue.objects.all()
     template = loader.get_template('dashboard.html')
@@ -166,14 +165,18 @@ def add_song(request, room_id, song_id):
     if request.method == 'GET':
         new_room_name = request.GET.get('name_box', None)
 
+    if request.method == 'GET':
+        skip_song = request.GET.get('skip_song', None)
+
 
     # Get information
     current_room = get_current_room(room_id)
     queue_songs = get_queue_songs(room_id)
     song_in_queue = is_song_in_queue(song_id, queue_songs)
     song_results = get_song_query_results(song_query)
+    cur_room_obj = Interface.find_room(room_id)
 
-
+    # Add Song to queue
     if song_in_queue:
         add_results = "ERROR: Song already in the Queue"
     else:
@@ -183,9 +186,15 @@ def add_song(request, room_id, song_id):
         add_results = "Song added to the queue."
         queue_songs = get_queue_songs(room_id)
 
+    # Skip song in this room
+    if skip_song is not None:
+        if cur_room_obj is not None:
+            Interface.next_song(cur_room_obj)
+            add_results += "Skipped song successfully."
+        else:
+            add_results += "Why is the room none?"
 
     context = {
-       'tracks': tracks,
        'rooms': rooms,
        'current_room': current_room,
         'song_results': song_results,
