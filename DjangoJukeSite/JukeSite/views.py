@@ -211,21 +211,10 @@ def skip_song(request, room_id):
     rooms = Room.objects.all()
     template = loader.get_template('dashboard.html')
 
-    # Get the search query string
-    if request.method == 'GET':
-        song_query = request.GET.get('search_box', None)
-
-    if request.method == 'GET':
-        new_room_name = request.GET.get('name_box', None)
-
-
     # Get information
     current_room = get_current_room(room_id)
     queue_songs = get_queue_songs(room_id)
-    song_results = get_song_query_results(song_query)
-
-    cur_room_id = current_room.id
-    cur_room_obj = Interface.find_room(cur_room_id)
+    cur_room_obj = Interface.find_room(room_id)
 
     if cur_room_obj is not None:
         Interface.next_song(cur_room_obj)
