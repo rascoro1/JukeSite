@@ -18,10 +18,12 @@ TODO:
     [X] Fix queue not getting synced correctly
     [X] When user adds a new song, elimate the delay.
         [X] Have the room object remember  which songs it downloaded
-    [] Add skip button of current cong for admin
+    [X] Add skip button of current cong for admin
     [] clean up the cache page
     [] add voting on songs in queue
-    [] when user searches song have previous search available with confirm message
+    [X] when user searches song have previous search available with confirm message
+        [] Have it automatically go to search when searching.
+
 """
 
 class Song():
@@ -286,15 +288,18 @@ class CBMInterface():
                     cur_song_id = res['message']['song_id']
 
                     if cur_dur == -1:
-                        current_song = r.queue[0]
-                        if cur_song_id != current_song.id:
-                            # Start playing the song but do not remove it from the queue
-                            first_song = r.queue[0]
-                            first_song.play()
-                            r.current_song = first_song
-                        else:
-                            # Song is old and needs to be removed
-                            Queue.objects.get(room_id=r.id).delete()
+                        try:
+                            current_song = r.queue[0]
+                            if cur_song_id != current_song.id:
+                                # Start playing the song but do not remove it from the queue
+                                current_song.play()
+                                r.current_song = current_song
+                            else:
+                                # Song is old and needs to be removed
+                                Queue.objects.get(room_id=r.id).delete()
+                        except IndexError:
+                            print("ERRORRRRRRRRRRRRRRRR")
+
                 else:
                     res = r.current_song.status()
                     res = json.loads(res)
