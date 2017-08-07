@@ -63,11 +63,6 @@
                                 <tr>
                                     <td><b>Added By:</b> {{ song.user }}</td>
                                 </tr>
-                                {% if request.user.is_superuser %}
-                                    <tr>
-                                        <td>Remove song<td>
-                                    </tr>
-                                {% endif %}
                             </table>
                         </div>
                     {% endfor %}
