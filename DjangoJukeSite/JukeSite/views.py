@@ -45,6 +45,7 @@ def search_song(request, room_id):
     song_query = None
     song_results = None
     new_room_name = None
+    new_add_song = None
     add_results = ""
 
     # Get the search query string
@@ -57,10 +58,13 @@ def search_song(request, room_id):
     if request.method == 'GET':
         skip_song = request.GET.get('skip_song', None)
 
+    if request.method == 'GET':
+        new_add_song = request.GET.get('new_song_add', None)
 
     # Get info
     current_room = get_current_room(room_id)
     queue_songs = get_queue_songs(room_id)
+    song_in_queue = is_song_in_queue(new_add_song, queue_songs)
     song_results = get_song_query_results(song_query)
     cur_room_obj = Interface.find_room(room_id)
 
@@ -69,6 +73,9 @@ def search_song(request, room_id):
         print("NEW ROOM IS NOT NONE: {}".format(new_room_name))
         current_room.name = new_room_name
         current_room.save()
+
+    # Add new song
+    add_results = add_song_to_room(song_in_queue, request, new_add_song, room_id)
 
     # Skip song in this room if needed
     add_results = skip_song_in_room(skip_song, cur_room_obj, add_results)
@@ -131,23 +138,19 @@ def add_song(request, room_id, song_id):
     if request.method == 'GET':
         skip_song = request.GET.get('skip_song', None)
 
+    if request.method == 'GET':
+        new_add_song = request.GET.get('new_song_add', None)
+
 
     # Get information
     current_room = get_current_room(room_id)
     queue_songs = get_queue_songs(room_id)
-    song_in_queue = is_song_in_queue(song_id, queue_songs)
+    song_in_queue = is_song_in_queue(new_add_song, queue_songs)
     song_results = get_song_query_results(song_query)
     cur_room_obj = Interface.find_room(room_id)
 
-    # Add Song to queue
-    if song_in_queue:
-        add_results = "ERROR: Song already in the Queue"
-    else:
-        print("THIs is the queuers username: {}".format(request.user.username))
-        q = Queue(storeId=song_id, room_id=room_id, user=request.user.username, position=1)
-        q.save()
-        add_results = "Song added to the queue."
-        queue_songs = get_queue_songs(room_id)
+    # Add new song
+    add_results = add_song_to_room(song_in_queue, request, new_add_song, room_id)
 
     # Skip song in this room
     add_results = skip_song_in_room(skip_song, cur_room_obj, add_results)
@@ -196,7 +199,8 @@ def is_song_in_queue(song_id, queue_songs):
     :param queue_songs: A list of songs to compare the song_id
     :return:
     """
-    for song in queue_songs:
+
+    for song in queue_songs and song_id is not None:
         if song_id == song['song'].storeId:
             return True
     return False
@@ -238,3 +242,14 @@ def skip_song_in_room(skip_song, cur_room_obj, add_results):
             add_results += "Why is the room none?"
 
     return add_results
+
+def add_song_to_room(song_in_queue, request, new_add_song, room_id):
+    # Add Song to queue
+    if song_in_queue:
+        add_results = "ERROR: Song already in the Queue"
+    else:
+        print("THIs is the queuers username: {}".format(request.user.username))
+        q = Queue(storeId=new_add_song, room_id=room_id, user=request.user.username, position=1)
+        q.save()
+        add_results = "Song added to the queue."
+        queue_songs = get_queue_songs(room_id)
