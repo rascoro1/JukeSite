@@ -48,29 +48,42 @@ def room(request, room_id):
 
     :return:
     """
+    template = loader.get_template('dashboard.html')
     current_room = None
+    add_results = ""
     queue_songs = []
     tracks = Track.objects.all()
     rooms = Room.objects.all()
     queues = Queue.objects.all()
 
+    # Get form submits
+    if request.method == 'GET':
+        skip_song = request.GET.get('skip_song', None)
+
+    # get info
     current_room = get_current_room(room_id)
+    cur_room_obj = Interface.find_room(room_id)
+
     # Find all the current songs in the  appropriate Queue
     songs = Queue.objects.filter(room_id=room_id)
     for s in songs:
         song_info = Track.objects.filter(storeId=s.storeId)
         queue_songs.append(song_info)
 
-    template = loader.get_template('dashboard.html')
+
+
+
+    # Skip song in this room if needed
+    add_results = skip_song_in_room(skip_song, cur_room_obj, add_results)
+
+
     context = {
         'tracks': tracks,
         'rooms': rooms,
         'current_room': current_room,
+        'add_results': add_results,
         'queue': queue_songs
     }
-
-
-
     return HttpResponse(template.render(context, request))
 
 
@@ -90,6 +103,7 @@ def search_song(request, room_id):
     song_query = None
     song_results = None
     new_room_name = None
+    add_results = ""
 
     # Get the search query string
     if request.method == 'GET':
@@ -98,23 +112,31 @@ def search_song(request, room_id):
     if request.method == 'GET':
         new_room_name = request.GET.get('name_box', None)
 
+    if request.method == 'GET':
+        skip_song = request.GET.get('skip_song', None)
 
 
+    # Get info
     current_room = get_current_room(room_id)
     queue_songs = get_queue_songs(room_id)
     song_results = get_song_query_results(song_query)
+    cur_room_obj = Interface.find_room(room_id)
 
+    # Renaming the room
     if new_room_name is not None:
         print("NEW ROOM IS NOT NONE: {}".format(new_room_name))
         current_room.name = new_room_name
         current_room.save()
 
-    print(queue_songs)
+    # Skip song in this room if needed
+    add_results = skip_song_in_room(skip_song, cur_room_obj, add_results)
+
     context = {
-       'rooms': rooms,
-       'current_room': current_room,
-       'song_results': song_results,
-       'queue': queue_songs
+        'rooms': rooms,
+        'current_room': current_room,
+        'song_results': song_results,
+        'add_results': add_results,
+        'queue': queue_songs
     }
     return HttpResponse(template.render(context, request))
 
@@ -152,10 +174,9 @@ def add_song(request, room_id, song_id):
     """
 
     current_room = None
-    add_results = None
+    add_results = ""
     queue_songs = []
     rooms = Room.objects.all()
-    queues = Queue.objects.all()
     template = loader.get_template('dashboard.html')
 
     # Get the search query string
@@ -187,12 +208,7 @@ def add_song(request, room_id, song_id):
         queue_songs = get_queue_songs(room_id)
 
     # Skip song in this room
-    if skip_song is not None:
-        if cur_room_obj is not None:
-            Interface.next_song(cur_room_obj)
-            add_results += "Skipped song successfully."
-        else:
-            add_results += "Why is the room none?"
+    add_results = skip_song_in_room(skip_song, cur_room_obj, add_results)
 
     context = {
        'rooms': rooms,
@@ -202,48 +218,6 @@ def add_song(request, room_id, song_id):
        'queue': queue_songs
     }
     return HttpResponse(template.render(context, request))
-
-
-def skip_song(request, room_id):
-    """
-    Repersents the view that is presented when the user submits a song to the queue.
-
-    :param request: Mandatory request parameter
-    :param room_id: The room the current user is in
-    :param song_id: The song that is being added to the room
-    :return:
-    """
-
-    current_room = None
-    add_results = None
-    queue_songs = []
-    rooms = Room.objects.all()
-    template = loader.get_template('dashboard.html')
-
-    if request.method == 'GET':
-        skip_song = request.GET.get('skip_song', None)
-
-    print("This is SKIP SONG: {} and type: {}".format(skip_song, type(skip_song)))
-
-    # Get information
-    current_room = get_current_room(room_id)
-    queue_songs = get_queue_songs(room_id)
-    cur_room_obj = Interface.find_room(room_id)
-
-    if cur_room_obj is not None:
-        Interface.next_song(cur_room_obj)
-        add_results = "Skipped song successfully."
-    else:
-        add_results = "Why is the room none?"
-
-    context = {
-       'rooms': rooms,
-       'current_room': current_room,
-        'add_results': add_results,
-       'queue': queue_songs
-    }
-    return HttpResponse(template.render(context, request))
-
 
 def get_queue_songs(room_id):
     """
@@ -311,3 +285,14 @@ def logoff():
     """
     Interface.music_manager.logout()
     Interface.music_manager.stop()
+
+def skip_song_in_room(skip_song, cur_room_obj, add_results):
+    # Skip song in this room
+    if skip_song is not None:
+        if cur_room_obj is not None:
+            Interface.next_song(cur_room_obj)
+            add_results += "Skipped song successfully."
+        else:
+            add_results += "Why is the room none?"
+
+    return add_results
