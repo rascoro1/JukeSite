@@ -87,6 +87,7 @@ def search_song(request, room_id):
     queue_songs = get_queue_songs(room_id)
     LAST_SEARCH_RESULTS = song_results
 
+    print("This is song results: {}".format(song_results))
     if song_results is None:
         song_results = LAST_SEARCH_RESULTS
 
