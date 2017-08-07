@@ -90,7 +90,7 @@
               {% for track in song_results %}
                   <div class="list-group">
                       <form>
-                          <button class="list-group-item" name="new_song_add" id="new_song_add">{{ track.track.title }} - {{ track.track.artist }} - {{ track.track.album }}</button>
+                          <button class="list-group-item" name="new_song_add" value="{{ track.track.storeId }}"id="new_song_add">{{ track.track.title }} - {{ track.track.artist }} - {{ track.track.album }}</button>
                       </form>
                   </div>
               {% endfor %}
