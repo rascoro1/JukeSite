@@ -78,6 +78,7 @@ def search_song(request, room_id):
     print("This is new add song: {}".format(new_add_song))
     if new_add_song is not None:
         add_results = add_song_to_room(song_in_queue, request, new_add_song, room_id)
+        queue_songs = get_queue_songs(room_id)
 
     # Skip song in this room if needed
     add_results = skip_song_in_room(skip_song, cur_room_obj, add_results)
