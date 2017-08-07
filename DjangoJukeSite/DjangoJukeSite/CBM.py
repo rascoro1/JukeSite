@@ -408,7 +408,9 @@ class CBMInterface():
         self.refresher()
 
     def find_room(self, room_id):
+        print("Room ID: {}".format(room_id))
         for r in self.rooms:
+            print("Aval room: {}".format(r.id))
             if r.id == room_id:
                 return r
         return None
