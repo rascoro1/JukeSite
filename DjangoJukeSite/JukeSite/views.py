@@ -10,6 +10,7 @@ Interface = CBMInterface()
 Interface.interface_name = ""
 Interface.start_music_client()
 Interface.music_manager_logon('andcope1995@gmail.com', 'Basketball12@1995')
+LAST_SEARCH_RESULTS =
 
 def index(request):
     """
@@ -37,6 +38,7 @@ def search_song(request, room_id):
     :param room_id: The room the user is currently in
     :return:
     """
+    global LAST_SEARCH_RESULTS
     print("THIS IS THE REQUEST DIR: {}".format(dir(request)))
     current_room = None
     queue_songs = []
@@ -78,10 +80,15 @@ def search_song(request, room_id):
     print("This is new add song: {}".format(new_add_song))
     if new_add_song is not None:
         add_results = add_song_to_room(song_in_queue, request, new_add_song, room_id)
-        queue_songs = get_queue_songs(room_id)
 
     # Skip song in this room if needed
     add_results = skip_song_in_room(skip_song, cur_room_obj, add_results)
+
+    queue_songs = get_queue_songs(room_id)
+    LAST_SEARCH_RESULTS = song_results
+
+    if song_results is None:
+        song_results = LAST_SEARCH_RESULTS
 
     context = {
         'rooms': rooms,
