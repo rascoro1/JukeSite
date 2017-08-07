@@ -214,7 +214,7 @@ def skip_song(request, room_id):
     if request.method == 'GET':
         skip_song = request.GET.get('skip_song', None)
 
-    print("This is SKIP SONG: {}".format(skip_song))
+    print("This is SKIP SONG: {} and type: {}".format(skip_song, type(skip_song)))
 
     # Get information
     current_room = get_current_room(room_id)
