@@ -211,6 +211,11 @@ def skip_song(request, room_id):
     rooms = Room.objects.all()
     template = loader.get_template('dashboard.html')
 
+    if request.method == 'GET':
+        skip_song = request.GET.get('skip_song_submit', None)
+
+    print("This is SKIP SONG: {}".format(skip_song))
+
     # Get information
     current_room = get_current_room(room_id)
     queue_songs = get_queue_songs(room_id)
