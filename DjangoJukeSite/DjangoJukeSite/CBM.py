@@ -23,6 +23,8 @@ TODO:
     [] add voting on songs in queue
     [X] when user searches song have previous search available with confirm message
         [] Have it automatically go to search when searching.
+    [] Add icons on search songs results indicating if song is cached on master and if it is on the slave
+    [] Play random songs from cache like pandora feature. (It would be cool if it grabbed popular songs)
 
 """
 
