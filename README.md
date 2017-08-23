@@ -34,6 +34,8 @@ pi@192.168.1.60:~ $ sudo reboot
 # Download the dependancies and master software
 pi@JukeSite:~/Desktop $ sudo apt-get install nmap
 pi@JukeSite:~/Desktop $ sudo apt-get install apache2
+pi@JukeSite:~/Desktop $ sudo apt-get install python3
+pi@JukeSite:~/Desktop $ sudo apt-get install python3-pip
 pi@JukeSite:~/Desktop $ git clone https://github.com/rascoro1/JukeSite
 pi@JukeSite:~/Desktop $ mkdir songs
 pi@JukeSite:~/Desktop $ sudo ln -s /home/pi/Desktop/songs /var/www/html
@@ -83,14 +85,16 @@ pi@192.168.1.60:~ $ sudo reboot
 
 pi@ibcKitchen:~ $ cd ~/Desktop
 # Download the dependancies and master software
-pi@JukeSite:~/Desktop $ sudo apt-get install wget
-pi@JukeSite:~/Desktop $ git clone https://github.com/rascoro1/JukeSite
-pi@JukeSite:~/Desktop $ mkdir songs
-pi@JukeSite:~/Desktop $ cd JukeSite/IBC_service/
+pi@ibcKitchen:~/Desktop $ sudo apt-get install wget
+pi@ibcKitchen:~/Desktop $ sudo apt-get install python3
+pi@ibcKitchen:~/Desktop $ sudo apt-get install python3-pip
+pi@ibcKitchen:~/Desktop $ git clone https://github.com/rascoro1/JukeSite
+pi@ibcKitchen:~/Desktop $ mkdir songs
+pi@ibcKitchen:~/Desktop $ cd JukeSite/IBC_service/
 # Install the python3 requirments
-pi@JukeSite:~/Desktop/JukeSite/IBC_service/ $ pip3 install ibc_requirements.txt
+pi@ibcKitchen:~/Desktop/JukeSite/IBC_service/ $ pip3 install ibc_requirements.txt
 # start the flask restful api
-pi@JukeSite:~/Desktop/JukeSite/IBC_service/ $ python3 IBCService.py
+pi@ibcKitchen:~/Desktop/JukeSite/IBC_service/ $ python3 IBCService.py
 ```
 Now you have one slave up this process is repeated for the other slaves.
 The slaves will be automatically added to 'JukeSite' only if the host name started with 'ibc'.
